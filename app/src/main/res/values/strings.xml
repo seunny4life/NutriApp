@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">NutriApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="don_t_have_an_account">Don\'t have an Account?</string>
+    <string name="Don_t_have_an_account" />
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account_click_here">Already have an Account? Click Here</string>
+    <string name="provide_the_email">Provide the Email</string>
+    <string name="enter_your_email_address_below">Enter your email address below</string>
+    <string name="remember_your_password">Remember your password?</string>
+    <string name="click_here">Click Here</string>
+    <string name="request_password_reset">REQUEST PASSWORD RESET</string>
+    <string name="not_a_member_yet">Not a member yet?</string>
+    <string name="forgotten_password">Forgotten Password</string>
+    <string name="back">Back</string>
+    <string name="google">Google</string>
+    <string name="change_password">Change Password</string>
+</resources>
