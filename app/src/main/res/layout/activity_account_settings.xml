@@ -9,18 +9,18 @@
 
     <TextView
         android:id="@+id/textViewPersonalInfoHeader"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
-        android:text="Personal Information"
+        android:text="@string/personal_information"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/buttonEditPersonalInfo"
         app:layout_constraintHorizontal_bias="0.5"
-
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,9 +32,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/input_bg"
-        android:drawableStart="@drawable/edit"
         android:drawablePadding="10dp"
-        android:text="Edit"
+        android:text="@string/edit"
         android:textAllCaps="true"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/textViewPersonalInfoHeader"
@@ -57,6 +56,7 @@
         android:text="@string/change_password"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:drawableStartCompat="@drawable/password_1"
         app:layout_constraintEnd_toEndOf="@+id/displayAge"
         app:layout_constraintStart_toStartOf="@+id/displayAge"
         app:layout_constraintTop_toBottomOf="@+id/displayAge" />
@@ -71,26 +71,29 @@
         android:clickable="true"
         android:drawablePadding="8dp"
         android:focusable="true"
-        android:textColor="@color/white"
         android:padding="16dp"
-        android:text="Notification Settings"
+        android:text="@string/notification_settings"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/ChangePasswordLiink"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ChangePasswordLiink"
-        app:layout_constraintTop_toBottomOf="@+id/ChangePasswordLiink" />
+        app:layout_constraintTop_toBottomOf="@+id/ChangePasswordLiink"
+        app:drawableLeftCompat="@drawable/baseline_edit_notifications_24" />
 
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
-        android:drawableStart="@drawable/arrow_back"
+        android:drawableBottom="@drawable/arrow_back"
         android:text="Back"
         android:textColor="@color/white"
+        android:textCursorDrawable="@drawable/arrow_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/notificationSettings"
-        app:layout_constraintStart_toStartOf="@+id/notificationSettings" />
+        app:layout_constraintStart_toStartOf="@+id/notificationSettings"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/imageViewProfile"
@@ -98,9 +101,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:background="@color/white"
+        android:contentDescription="@string/profile_picture"
         app:layout_constraintEnd_toEndOf="@+id/buttonEditPersonalInfo"
         app:layout_constraintStart_toStartOf="@+id/textViewPersonalInfoHeader"
         app:layout_constraintTop_toBottomOf="@+id/textViewPersonalInfoHeader"
+        tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -141,4 +146,5 @@
         app:layout_constraintEnd_toEndOf="@+id/displayEmail"
         app:layout_constraintStart_toStartOf="@+id/displayEmail"
         app:layout_constraintTop_toBottomOf="@+id/displayEmail" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

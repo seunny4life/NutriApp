@@ -29,9 +29,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button buttonRegister;
     private TextView inputSignIn;
     private FirebaseAuth regFireBaseAuth;
-    private String username;
-    private String email;
-
     // Regular expression pattern for email validation
     private final Pattern pattern = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 
@@ -70,8 +67,6 @@ public class RegistrationActivity extends AppCompatActivity {
         inputSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //username = inputUserName.getText().toString();
-                //email = inputEmail.getText().toString();
                 startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
             }
         });

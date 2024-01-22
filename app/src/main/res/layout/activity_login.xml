@@ -19,7 +19,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18"
+        app:layout_constraintVertical_bias="0.14999998"
+        tools:ignore="HardcodedText"
         tools:layout_editor_absoluteX="-16dp" />
 
     <EditText
@@ -74,10 +75,10 @@
         android:id="@+id/inputForgotPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="@string/forgot_password"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/inputPassword"
         app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
@@ -86,7 +87,7 @@
         android:id="@+id/buttonSignIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/btn_bg"
         android:text="@string/sign_in"
         android:textSize="20sp"
@@ -98,7 +99,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/buttonSignIn"
@@ -111,7 +112,7 @@
             android:layout_height="wrap_content"
             android:text="Don't have an account?"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -120,7 +121,7 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -131,13 +132,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/btn_bg"
         android:text="icloud.com"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoogle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonGoogle"
