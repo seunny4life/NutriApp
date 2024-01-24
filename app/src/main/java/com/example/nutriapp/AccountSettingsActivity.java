@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AccountSettingsActivity extends AppCompatActivity {
     private Button back, edit;
-    TextView changePassLiink, notifSettings, dateOfBirth, userName, email;
+    TextView changePassLiink, notifSettings, fullName, location, email;
     private FirebaseAuth accountSetFireBaseAuth;
 
     @Override
@@ -38,8 +39,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
         back = findViewById(R.id.buttonBack);
         changePassLiink = findViewById(R.id.ChangePasswordLiink);
         notifSettings = findViewById(R.id.notificationSettings);
-        dateOfBirth = findViewById(R.id.displayAge);
-        userName = findViewById(R.id.displayUserName);
+        fullName = findViewById(R.id.displayName);
+        location = findViewById(R.id.displayLocation);
         email = findViewById(R.id.displayEmail);
         accountSetFireBaseAuth = FirebaseAuth.getInstance();
 
@@ -81,31 +82,41 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
     }
-
     private void displayUserData() {
         FirebaseUser currentUser = accountSetFireBaseAuth.getCurrentUser();
         if (currentUser != null) {
-            // Display the email from Firebase Auth
-            String userEmail = currentUser.getEmail();
-            email.setText(String.format("Email: %s", userEmail));
+            email.setText(String.format("Email: %s", currentUser.getEmail()));
 
-            // Fetch and display username from Firebase Database
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
             databaseReference.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        // Assuming 'username' is a field in your database
-                        String username = dataSnapshot.child("username").getValue(String.class);
-                        userName.setText(username);
+                        // Log retrieved data
+                        Log.d("AccountSettings", "DataSnapshot: " + dataSnapshot.toString());
+
+                        String firstName = dataSnapshot.child("firstName").getValue(String.class);
+                        String lastName = dataSnapshot.child("lastName").getValue(String.class);
+                        String userLocation = dataSnapshot.child("place").getValue(String.class);
+
+                        fullName.setText(String.format("%s %s", firstName, lastName)); // Assuming fullName combines first and last name
+                        location.setText(userLocation);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     // Handle possible errors when fetching data from the database.
+                    Log.e("AccountSettings", "Database Error: " + databaseError.getMessage());
                 }
             });
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayUserData(); // Refresh user data
+    }
+
+
 }

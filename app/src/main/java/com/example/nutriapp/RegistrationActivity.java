@@ -38,6 +38,11 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        initializeUIComponents();
+
+    }
+    private void initializeUIComponents(){
+
         // Link UI components with layout IDs
         inputUserName = findViewById(R.id.editTextUserName);
         inputEmail = findViewById(R.id.editTextEmail);
@@ -50,8 +55,8 @@ public class RegistrationActivity extends AppCompatActivity {
         // Set up event listeners for buttons and text views
         buttonRegister();
         inputSignIn();
-    }
 
+    }
     // Method to handle registration button click
     public void buttonRegister() {
         buttonRegister.setOnClickListener(new View.OnClickListener() {

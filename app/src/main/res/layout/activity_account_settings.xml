@@ -57,9 +57,9 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:drawableStartCompat="@drawable/password_1"
-        app:layout_constraintEnd_toEndOf="@+id/displayAge"
-        app:layout_constraintStart_toStartOf="@+id/displayAge"
-        app:layout_constraintTop_toBottomOf="@+id/displayAge" />
+        app:layout_constraintEnd_toEndOf="@+id/displayLocation"
+        app:layout_constraintStart_toStartOf="@+id/displayLocation"
+        app:layout_constraintTop_toBottomOf="@+id/displayLocation" />
 
 
     <TextView
@@ -85,6 +85,7 @@
         android:id="@+id/buttonBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/input_bg"
         android:drawableBottom="@drawable/arrow_back"
         android:text="Back"
@@ -109,7 +110,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/displayUserName"
+        android:id="@+id/displayName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -130,12 +131,12 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/displayUserName"
-        app:layout_constraintStart_toStartOf="@+id/displayUserName"
-        app:layout_constraintTop_toBottomOf="@+id/displayUserName" />
+        app:layout_constraintEnd_toEndOf="@+id/displayName"
+        app:layout_constraintStart_toStartOf="@+id/displayName"
+        app:layout_constraintTop_toBottomOf="@+id/displayName" />
 
     <TextView
-        android:id="@+id/displayAge"
+        android:id="@+id/displayLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
