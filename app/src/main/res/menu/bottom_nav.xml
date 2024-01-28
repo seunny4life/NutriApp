@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/mainActivity"
+        android:title="@string/home"
+        android:icon="@drawable/home"/>
+    <item android:id="@+id/fragmentNutrition"
+        android:title="@string/nutrition"
+        android:icon="@drawable/food"/>
+    <item android:id="@+id/fragmentCalories"
+        android:title="@string/calories"
+        android:icon="@drawable/food"/>
+    <item android:title="@string/fitness"
+        android:icon="@drawable/fitness_white"/>
+    <item
+        android:id="@+id/accountActivity"
+        android:title="@string/account"
+        android:icon="@drawable/manage_accounts"/>
+</menu>

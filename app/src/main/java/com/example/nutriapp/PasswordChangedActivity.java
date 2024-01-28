@@ -66,7 +66,7 @@ public class PasswordChangedActivity extends AppCompatActivity {
                                 Toast.makeText(PasswordChangedActivity.this, "Password Changed Successfully", Toast.LENGTH_LONG).show();
 
                                 // Redirect to the Account Settings activity
-                                Intent intent = new Intent(PasswordChangedActivity.this, AccountSettingsActivity.class);
+                                Intent intent = new Intent(PasswordChangedActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();

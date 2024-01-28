@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/accountActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/designs"
@@ -75,14 +76,14 @@
         android:text="@string/notification_settings"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:drawableLeftCompat="@drawable/baseline_edit_notifications_24"
         app:layout_constraintEnd_toEndOf="@+id/ChangePasswordLiink"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/ChangePasswordLiink"
-        app:layout_constraintTop_toBottomOf="@+id/ChangePasswordLiink"
-        app:drawableLeftCompat="@drawable/baseline_edit_notifications_24" />
+        app:layout_constraintTop_toBottomOf="@+id/ChangePasswordLiink" />
 
     <Button
-        android:id="@+id/buttonBack"
+        android:id="@+id/logoutBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"

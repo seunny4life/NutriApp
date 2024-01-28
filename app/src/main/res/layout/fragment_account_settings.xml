@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/accountSettings"
+    tools:context=".AccountSettingsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:ignore="UselessParent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/designs">
+
+            <TextView
+                android:id="@+id/textViewPersonalInfoHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/personal_information"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread" />
+
+            <Button
+                android:id="@+id/buttonEditPersonalInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/input_bg"
+                android:drawablePadding="10dp"
+                android:text="@string/edit"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewPersonalInfoHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textViewPersonalInfoHeader"
+                app:layout_constraintTop_toTopOf="@+id/textViewPersonalInfoHeader" />
+
+            <TextView
+                android:id="@+id/ChangePasswordLiink"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:backgroundTint="#FFFFFF"
+                android:clickable="true"
+                android:drawablePadding="8dp"
+                android:focusable="true"
+                android:padding="16dp"
+                android:text="@string/change_password"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:drawableStartCompat="@drawable/password_1"
+                app:layout_constraintBottom_toTopOf="@+id/notificationSettings"
+                app:layout_constraintEnd_toEndOf="@+id/displayLocation"
+                app:layout_constraintStart_toStartOf="@+id/displayLocation"
+                app:layout_constraintTop_toBottomOf="@+id/displayLocation" />
+
+
+            <TextView
+                android:id="@+id/notificationSettings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="8dp"
+                android:focusable="true"
+                android:padding="16dp"
+                android:text="@string/notification_settings"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:drawableLeftCompat="@drawable/baseline_edit_notifications_24"
+                app:layout_constraintBottom_toTopOf="@+id/logoutBack"
+                app:layout_constraintEnd_toEndOf="@+id/ChangePasswordLiink"
+                app:layout_constraintStart_toStartOf="@+id/ChangePasswordLiink"
+                app:layout_constraintTop_toBottomOf="@+id/ChangePasswordLiink" />
+
+            <Button
+                android:id="@+id/logoutBack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_bg"
+                android:textSize="18sp"
+                android:text="Log Out"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/notificationSettings"
+                app:layout_constraintStart_toStartOf="@+id/notificationSettings"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/imageViewProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/profile_picture"
+                app:layout_constraintBottom_toTopOf="@+id/displayName"
+                app:layout_constraintEnd_toEndOf="@+id/buttonEditPersonalInfo"
+                app:layout_constraintStart_toStartOf="@+id/textViewPersonalInfoHeader"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPersonalInfoHeader"
+                tools:ignore="ImageContrastCheck"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/displayName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/displayEmail"
+                app:layout_constraintEnd_toEndOf="@+id/buttonEditPersonalInfo"
+                app:layout_constraintStart_toStartOf="@+id/textViewPersonalInfoHeader"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewProfile" />
+
+            <TextView
+                android:id="@+id/displayEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/displayLocation"
+                app:layout_constraintEnd_toEndOf="@+id/displayName"
+                app:layout_constraintStart_toStartOf="@+id/displayName"
+                app:layout_constraintTop_toBottomOf="@+id/displayName" />
+
+            <TextView
+                android:id="@+id/displayLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/ChangePasswordLiink"
+                app:layout_constraintEnd_toEndOf="@+id/displayEmail"
+                app:layout_constraintStart_toStartOf="@+id/displayEmail"
+                app:layout_constraintTop_toBottomOf="@+id/displayEmail" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

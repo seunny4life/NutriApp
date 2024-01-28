@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/colors.xml -->
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="active_color">#FF0000</color>  <!-- Red color for active state -->
+    <color name="inactive_color">#CCCCCC</color>  <!-- Grey color for inactive state -->
 </resources>

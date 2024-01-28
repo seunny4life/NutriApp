@@ -1,3 +1,4 @@
+/*
 package com.example.nutriapp;
 
 import androidx.annotation.NonNull;
@@ -120,3 +121,4 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
 
 }
+*/

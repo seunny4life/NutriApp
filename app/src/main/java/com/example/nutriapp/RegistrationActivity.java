@@ -106,11 +106,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Handle successful registration
-                                Toast.makeText(RegistrationActivity.this, "Registration Successfully", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                navigateToLogin();
+
                             } else {
                                 // Handle registration failure
                                 Toast.makeText(RegistrationActivity.this, "Registration Failed", Toast.LENGTH_LONG).show();
@@ -124,5 +121,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private void showError(EditText input, String message) {
         input.setError(message);
         input.requestFocus();
+    }
+    private void navigateToLogin() {
+        Toast.makeText(RegistrationActivity.this, "Registration Successfully", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }
