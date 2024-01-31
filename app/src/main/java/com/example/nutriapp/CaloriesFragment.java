@@ -1,5 +1,6 @@
 package com.example.nutriapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class CaloriesFragment extends Fragment {
@@ -83,6 +85,7 @@ public class CaloriesFragment extends Fragment {
         builder.setView(inputView);
 
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String mealName = mealNameEditText.getText().toString().trim();
@@ -124,6 +127,6 @@ public class CaloriesFragment extends Fragment {
         for (MealItem item : mealItemList) {
             totalCalories += item.getCalories();
         }
-        totalCaloriesTextView.setText("Total Calories: " + totalCalories);
+        totalCaloriesTextView.setText(MessageFormat.format("Total Calories: {0}", totalCalories));
     }
 }

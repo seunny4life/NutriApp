@@ -32,12 +32,17 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new Fragment();
             } else if (itemId == R.id.accountActivity) {
                 selectedFragment = new AccountSettingsFragment();
-            } else if (itemId == R.id.fragmentNutrition) {
-                selectedFragment = new NutritionFragment();
+             /*else if (itemId == R.id.workout) {
+                selectedFragment = new NutritionFragment();*/
             } else if (itemId == R.id.fragmentCalories) {
             selectedFragment = new CaloriesFragment();
-
-        }
+        } else if (itemId == R.id.fragmentFitness){
+                selectedFragment = new FitnessFragment();
+                /*Intent intent = new Intent(MainActivity.this, WorkoutActivity.class);
+                startActivity(intent);
+                return true;
+*/
+            }
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)

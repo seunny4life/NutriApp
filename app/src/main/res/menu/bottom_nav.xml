@@ -6,14 +6,19 @@
     <item android:id="@+id/mainActivity"
         android:title="@string/home"
         android:icon="@drawable/home"/>
-    <item android:id="@+id/fragmentNutrition"
+
+    <!--<item android:id="@id"
         android:title="@string/nutrition"
-        android:icon="@drawable/food"/>
+        android:icon="@drawable/food"/>-->
+
     <item android:id="@+id/fragmentCalories"
         android:title="@string/calories"
         android:icon="@drawable/food"/>
-    <item android:title="@string/fitness"
+
+    <item android:id="@id/fragmentFitness"
+        android:title="@string/fitness"
         android:icon="@drawable/fitness_white"/>
+
     <item
         android:id="@+id/accountActivity"
         android:title="@string/account"

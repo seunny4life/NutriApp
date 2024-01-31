@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/designs"
+    android:padding="4dp"
     tools:context=".CaloriesFragment">
 
-    <!-- Title TextView -->
     <TextView
         android:id="@+id/caloriesTitle"
         android:layout_width="0dp"
@@ -23,7 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Total Calories TextView -->
     <TextView
         android:id="@+id/totalCalories"
         android:layout_width="0dp"
@@ -47,7 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Add Meal Button -->
     <Button
         android:id="@+id/addMealButton"
         android:layout_width="0dp"

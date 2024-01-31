@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardviewone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="200dp"
+    app:cardElevation="2dp"
+    android:background="@drawable/designs">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="#90050505"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/row_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:padding="4dp"
+            android:text="Day 1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/rel1"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <com.daimajia.numberprogressbar.NumberProgressBar
+                android:id="@+id/progressbar"
+                style="@style/NumberProgressBar_Custome1"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                tools:ignore="MissingClass" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel2"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="4dp"
+            android:layout_toStartOf="@id/rel1"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/restImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rest_1"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
