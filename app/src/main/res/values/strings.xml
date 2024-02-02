@@ -50,6 +50,7 @@
     <string name="fitness">Fitness</string>
     <string name="account">Account</string>
     <string name="steps_0">Steps: 0</string>
+    <string name="calories_result">Calories needed: %1$.2f</string>
     <string name="list_of_foods_consumed">List of Foods Consumed</string>
     <string name="add_food">Add Food</string>
     <string name="meal_name">Meal Name</string>
@@ -58,4 +59,5 @@
     <string name="error_empty_fields">Please fill in all fields</string>
     <string name="error_invalid_number">Invalid number format</string>
     <string name="add_a_meal">Add a Meal</string>
+    <string name="enter_age">Enter Age</string>
 </resources>

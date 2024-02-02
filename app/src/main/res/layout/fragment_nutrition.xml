@@ -1,104 +1,80 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentNutrition"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/designs"
-    android:id="@+id/nutritution"
-    tools:context=".NutritionFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your information:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <EditText
+        android:id="@+id/height"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:hint="Height"
+        android:inputType="numberDecimal" />
 
-        <!-- Daily Nutrition Goals Header -->
-            <TextView
-                android:id="@+id/dailyGoalsText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Daily Nutrition Goals"
-                android:textSize="30sp"
-                android:textColor="@android:color/white"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textAlignment="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <Spinner
+        android:id="@+id/heightUnitSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <!-- Nutrition Metrics Layout -->
-            <LinearLayout
-                android:id="@+id/nutritionMetricsLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dailyGoalsText">
+    <EditText
+        android:id="@+id/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Weight"
+        android:inputType="numberDecimal" />
 
-                <!-- Calories TextView -->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Calories: 2000kcal"
-                    android:textColor="@android:color/white"
-                    android:gravity="center" />
+    <Spinner
+        android:id="@+id/weightUnitSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-                <!-- Protein TextView -->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Protein: 50g"
-                    android:textColor="@android:color/white"
-                    android:gravity="center" />
-            </LinearLayout>
+    <Spinner
+        android:id="@+id/activityLevelSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <!-- Food Intake Header -->
-            <TextView
-                android:id="@+id/foodTrackingText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Food Intake"
-                android:textColor="@android:color/white"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nutritionMetricsLayout" />
+    <Button
+        android:id="@+id/calculateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calculate" />
 
-            <!-- Food List RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/foodListRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/addFoodButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/foodTrackingText" />
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calorie Result"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <!-- Add Food Button -->
-            <Button
-                android:id="@+id/addFoodButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_bg"
-                android:drawableBottom="@drawable/add"
-                android:text="@string/add_food"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+    <!-- Nutrient Breakdown TextView -->
+    <TextView
+        android:id="@+id/nutrientBreakdownTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nutrient Breakdown:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-</FrameLayout>
+    <!-- Meal Timing TextView -->
+    <TextView
+        android:id="@+id/mealTimingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meal Timing Recommendations:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <!-- Nutritional Tips TextView -->
+    <TextView
+        android:id="@+id/nutritionalTipsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nutritional Tips:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

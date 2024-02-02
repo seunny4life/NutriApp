@@ -7,9 +7,9 @@
         android:title="@string/home"
         android:icon="@drawable/home"/>
 
-    <!--<item android:id="@id"
+    <item android:id="@id/fragmentNutrition"
         android:title="@string/nutrition"
-        android:icon="@drawable/food"/>-->
+        android:icon="@drawable/food"/>
 
     <item android:id="@+id/fragmentCalories"
         android:title="@string/calories"

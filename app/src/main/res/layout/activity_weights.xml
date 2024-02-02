@@ -1,99 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragmentFitness"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/designs">
+    android:fillViewport="true">
 
-    <!-- Title TextView -->
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragmentFitness"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:text="Workout"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@drawable/designs">
 
-    <!-- Start/Pause Button -->
-    <Button
-        android:id="@+id/startPauseButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Start"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="Workout"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/exerciseTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <!-- Exercise TextView -->
-    <TextView
-        android:id="@+id/exerciseTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Exercise"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/startPauseButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Start/Pause Button -->
 
-    <!-- Description TextView -->
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Exercise TextView -->
+        <Button
+            android:id="@+id/startPauseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_bg"
+            android:text="Start"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView" />
 
-    <!-- Timer TextView -->
-    <TextView
-        android:id="@+id/timerTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Remaining Time"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/exerciseTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Exercise"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
+            app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+            app:layout_constraintStart_toStartOf="@+id/titleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <!-- Complete Exercise Button -->
-    <Button
-        android:id="@+id/completeButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:enabled="false"
-        android:text="Complete Exercise"
-        app:layout_constraintTop_toBottomOf="@+id/timerTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Description TextView -->
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/timerTextView"
+            app:layout_constraintEnd_toEndOf="@+id/exerciseTextView"
+            app:layout_constraintStart_toStartOf="@+id/exerciseTextView"
+            app:layout_constraintTop_toBottomOf="@+id/exerciseTextView" />
 
-    <!-- ImageView -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/doge_pose"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/completeButton" />
+        <!-- Timer TextView -->
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Remaining Time"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/completeButton"
+            app:layout_constraintEnd_toEndOf="@+id/descriptionTextView"
+            app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Complete Exercise Button -->
+        <Button
+            android:id="@+id/completeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Complete Exercise"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/timerTextView"
+            app:layout_constraintStart_toStartOf="@+id/timerTextView"
+            app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
+
+        <!-- ImageView -->
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/doge_pose"
+            app:layout_constraintBottom_toTopOf="@+id/startPauseButton"
+            app:layout_constraintEnd_toEndOf="@+id/completeButton"
+            app:layout_constraintStart_toStartOf="@+id/completeButton"
+            app:layout_constraintTop_toBottomOf="@+id/completeButton" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/arrow_back"
+            android:drawablePadding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

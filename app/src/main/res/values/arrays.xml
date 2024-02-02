@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/arrays.xml -->
+<resources>
+    <string-array name="unit_options">
+        <item>Metric (cm, kg)</item>
+        <item>Imperial (in, lbs)</item>
+    </string-array>
+</resources>

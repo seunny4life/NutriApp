@@ -1,6 +1,5 @@
 package com.example.nutriapp;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -40,6 +39,7 @@ public class WeightsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weights);
 
+        // Initialize views
         titleTextView = findViewById(R.id.titleTextView);
         exerciseTextView = findViewById(R.id.exerciseTextView);
         descriptionTextView = findViewById(R.id.descriptionTextView);
@@ -48,12 +48,15 @@ public class WeightsActivity extends AppCompatActivity {
         completeButton = findViewById(R.id.completeButton);
         imageView = findViewById(R.id.imageView);
 
+        // Initialize exercise data
         exercises.add(new Exercise("Push-ups", "Place your hands shoulder-width apart on the floor. Lower your body until your chest nearly touches the floor. Push your body back up until your arms are fully extended.", 10, "https://media.tenor.com/gI-8qCUEko8AAAAC/pushup.gif"));
         exercises.add(new Exercise("Squats", "Stand with your feet shoulder-width apart. Lower your body as far as you can by pushing your hips back and bending your knees. Return to the starting position.", 10, "https://thumbs.gfycat.com/HeftyPartialGroundbeetle-size_restricted.gif"));
         exercises.add(new Exercise("Plank", "Start in a push-up position, then bend your elbows and rest your weight on your forearms. Hold this position for as long as you can.", 10, "https://media.tenor.com/6SOetkNbfakAAAAM/plank-abs.gif"));
 
+        // Disable completeButton initially
         completeButton.setEnabled(false);
 
+        // Set onClickListeners for buttons
         startPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +79,7 @@ public class WeightsActivity extends AppCompatActivity {
         });
     }
 
+    // Start the workout
     private void startWorkout() {
         exerciseIndex = 0;
         titleTextView.setText("Workout Started");
@@ -86,6 +90,7 @@ public class WeightsActivity extends AppCompatActivity {
         startNextExercise();
     }
 
+    // Pause or resume the workout timer
     private void pauseResumeWorkout() {
         isPaused = !isPaused;
         if (isPaused) {
@@ -99,6 +104,7 @@ public class WeightsActivity extends AppCompatActivity {
         }
     }
 
+    // Start the next exercise
     private void startNextExercise() {
         if (exerciseIndex < exercises.size()) {
             currentExercise = exercises.get(exerciseIndex);
@@ -149,6 +155,7 @@ public class WeightsActivity extends AppCompatActivity {
         }
     }
 
+    // Start the next exercise with remaining time if paused
     private void startNextExerciseWithRemainingTime() {
         if (exerciseIndex < exercises.size()) {
             currentExercise = exercises.get(exerciseIndex);
@@ -191,12 +198,14 @@ public class WeightsActivity extends AppCompatActivity {
         }
     }
 
+    // Complete the exercise
     private void completeExercise() {
         timer.cancel();
         completeButton.setEnabled(false);
         startNextExercise();
     }
 
+    // Format time in MM:SS format
     @SuppressLint("DefaultLocale")
     private String formatTime(int seconds) {
         int minutes = seconds / 60;
@@ -204,6 +213,7 @@ public class WeightsActivity extends AppCompatActivity {
         return String.format("%02d:%02d", minutes, remainingSeconds);
     }
 
+    // Exercise class to store exercise data
     private static class Exercise {
         String name;
         String description;
