@@ -29,21 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-        <!-- Start/Pause Button -->
-
         <!-- Exercise TextView -->
-        <Button
-            android:id="@+id/startPauseButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_bg"
-            android:text="Start"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView" />
-
         <TextView
             android:id="@+id/exerciseTextView"
             android:layout_width="0dp"
@@ -93,7 +79,6 @@
             app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
         <!-- ImageView -->
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -103,6 +88,19 @@
             app:layout_constraintEnd_toEndOf="@+id/completeButton"
             app:layout_constraintStart_toStartOf="@+id/completeButton"
             app:layout_constraintTop_toBottomOf="@+id/completeButton" />
+
+        <!-- Start/Pause Button -->
+        <Button
+            android:id="@+id/startPauseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_bg"
+            android:text="Start"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView" />
 
         <TextView
             android:id="@+id/textView7"

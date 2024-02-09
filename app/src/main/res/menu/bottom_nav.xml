@@ -15,8 +15,8 @@
         android:title="@string/calories"
         android:icon="@drawable/food"/>
 
-    <item android:id="@id/fragmentFitness"
-        android:title="@string/fitness"
+    <item android:id="@+id/fragment_workout"
+        android:title="@string/workout"
         android:icon="@drawable/fitness_white"/>
 
     <item

@@ -60,4 +60,8 @@
     <string name="error_invalid_number">Invalid number format</string>
     <string name="add_a_meal">Add a Meal</string>
     <string name="enter_age">Enter Age</string>
+    <string name="title_activity_exercises">ExercisesActivity</string>
+    <string name="exercise_duration">%1$d mins</string>
+    <string name="workout">Workout</string>
+    <string name="exercise_image">exercise_image</string>
 </resources>

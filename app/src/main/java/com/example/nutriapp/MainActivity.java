@@ -1,5 +1,6 @@
 package com.example.nutriapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -7,6 +8,8 @@ import android.widget.ScrollView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
@@ -20,8 +23,17 @@ public class MainActivity extends AppCompatActivity {
 
         initializeUIComponents();
 
-        // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.mainActivity); // Assuming this ID is correctly pointing to a menu item.
+        // Check if the user is authenticated
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
+            // User is not authenticated, redirect to LoginActivity
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        } else {
+            // User is authenticated, display personalized content
+            displayPersonalizedContent();
+        }
     }
 
     private void initializeUIComponents() {
@@ -52,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new NutritionFragment();
                 } else if (itemId == R.id.fragmentCalories) {
                     selectedFragment = new CaloriesFragment();
-                } else if (itemId == R.id.fragmentFitness) {
-                    selectedFragment = new FitnessFragment();
+                } else if (itemId == R.id.fragment_workout) {
+                    selectedFragment = new WorkoutFragment();
                 }
 
                 // Perform the fragment transaction
@@ -64,5 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+    }
+
+    private void displayPersonalizedContent() {
+        // Implement logic to display personalized content
+        // This can include loading user profile data, recent workouts, nutrition tracking, etc.
+        // Update the bottom navigation menu based on the user's authentication status
+        // For example, if the user is logged in, display options for profile settings, workout tracking, etc.
+        // If the user is not logged in, display options for logging in or signing up.
     }
 }
