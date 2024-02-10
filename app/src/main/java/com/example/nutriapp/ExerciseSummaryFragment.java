@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import java.util.Objects;
 
 public class ExerciseSummaryFragment extends Fragment {
 
@@ -49,6 +53,7 @@ public class ExerciseSummaryFragment extends Fragment {
         TextView caloriesBurnedTextView = view.findViewById(R.id.caloriesBurnedTextView);
         TextView distanceTextView = view.findViewById(R.id.distanceTextView); // TextView for distance
         TextView heartRateTextView = view.findViewById(R.id.heartRateTextView); // TextView for heart rate
+        Button okButton = view.findViewById(R.id.okButton); // OK button
 
         exerciseTypeTextView.setText(exerciseType);
         durationTextView.setText(String.valueOf(duration));
@@ -56,5 +61,25 @@ public class ExerciseSummaryFragment extends Fragment {
         // Set cardio exercise data
         distanceTextView.setText(String.valueOf(distance));
         heartRateTextView.setText(String.valueOf(averageHeartRate));
+
+        // Click listener for the OK button
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate back to the WorkoutFragment
+// Click listener for the OK button
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Navigate back to the WorkoutFragment
+                        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, new WorkoutFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                });
+
+            }
+        });
     }
 }

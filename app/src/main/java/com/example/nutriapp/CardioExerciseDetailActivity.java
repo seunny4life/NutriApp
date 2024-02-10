@@ -2,13 +2,16 @@ package com.example.nutriapp;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import java.text.MessageFormat;
+
+import com.example.nutriapp.ExerciseSummaryFragment;
 
 public class CardioExerciseDetailActivity extends AppCompatActivity {
     private TextView nameTextView;
@@ -20,6 +23,7 @@ public class CardioExerciseDetailActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private long startTimeMillis;
     private long remainingTimeMillis;
+    private ExerciseSummaryFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,12 @@ public class CardioExerciseDetailActivity extends AppCompatActivity {
 
             nameTextView.setText(name);
             imageView.setImageResource(imageResId);
-            durationTextView.setText(MessageFormat.format("{0} mins", duration));
+            durationTextView.setText(String.format("%d mins", duration));
 
             durationNumberPicker.setMinValue(1);
             durationNumberPicker.setMaxValue(120);
             durationNumberPicker.setValue(duration);
-            durationNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
-                durationTextView.setText(MessageFormat.format("{0} mins", newVal));
-            });
+            durationNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> durationTextView.setText(String.format("%d mins", newVal)));
 
             startPauseButton.setOnClickListener(v -> {
                 long durationMillis = (long) durationNumberPicker.getValue() * 60 * 1000;
@@ -58,19 +60,14 @@ public class CardioExerciseDetailActivity extends AppCompatActivity {
 
     private void startOrPauseCountdown(long durationMillis) {
         if (isExerciseRunning) {
-            // Pause the countdown
             countDownTimer.cancel();
             isExerciseRunning = false;
             startPauseButton.setText("Start");
-            // Store the remaining time when paused
             remainingTimeMillis = durationMillis - (System.currentTimeMillis() - startTimeMillis);
         } else {
-            // Resume the countdown or start a new one if it hasn't started yet
             if (remainingTimeMillis > 0) {
-                // Resume countdown with remaining time
                 startCountdown(remainingTimeMillis);
             } else {
-                // Start a new countdown
                 startCountdown(durationMillis);
             }
         }
@@ -89,52 +86,69 @@ public class CardioExerciseDetailActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 updateDurationTextView(0);
-                // Perform any actions needed when the exercise is completed
                 isExerciseRunning = false;
                 startPauseButton.setText("Start");
-                // Navigate to ExerciseSummaryFragment
+                Log.d("CountdownTimer", "Exercise finished, navigating to summary.");
                 navigateToExerciseSummary();
             }
         }.start();
     }
 
     private void updateDurationTextView(long millisUntilFinished) {
-        long seconds = (millisUntilFinished / 1000) % 60;
         long minutes = (millisUntilFinished / (1000 * 60)) % 60;
-        long hours = (millisUntilFinished / (1000 * 60 * 60)) % 24;
-
-        String duration = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        durationTextView.setText(duration);
+        long seconds = (millisUntilFinished / 1000) % 60;
+        durationTextView.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
     private void navigateToExerciseSummary() {
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+
+        // Hide activity views to make space for the fragment
+        hideActivityViews();
+
+        // Check if a fragment is already added to the container
+        ExerciseSummaryFragment existingFragment = (ExerciseSummaryFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        if (existingFragment != null) {
+            // Fragment is already added, no need to replace it
+            return;
+        }
+
+        // Create a new instance of ExerciseSummaryFragment
         ExerciseSummaryFragment fragment = new ExerciseSummaryFragment();
         Bundle args = new Bundle();
         args.putString("EXERCISE_TYPE", nameTextView.getText().toString());
         args.putInt("DURATION", durationNumberPicker.getValue());
         args.putInt("CALORIES_BURNED", calculateCaloriesBurned(durationNumberPicker.getValue()));
-        // Additional cardio exercise data
-        args.putDouble("DISTANCE", 5.0); // Example value
-        args.putInt("AVERAGE_HEART_RATE", 120); // Example value
+        // Example values, replace with actual logic if necessary
+        args.putDouble("DISTANCE", 5.0);
+        args.putInt("AVERAGE_HEART_RATE", 120);
         fragment.setArguments(args);
 
+        // Replace the fragment container with ExerciseSummaryFragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // Replace the fragment_container with ExerciseSummaryFragment
-        transaction.replace(android.R.id.content, fragment);
+        transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    // Method to calculate calories burned (example implementation)
+    private void hideActivityViews() {
+        nameTextView.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+        durationTextView.setVisibility(View.GONE);
+        durationNumberPicker.setVisibility(View.GONE);
+        startPauseButton.setVisibility(View.GONE);
+    }
+
     private int calculateCaloriesBurned(int duration) {
-        // Example calculation based on duration
-        return duration * 10; // Assuming 10 calories burned per minute
+        return duration * 10; // Example calculation
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Stop the timer when the activity is destroyed
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
