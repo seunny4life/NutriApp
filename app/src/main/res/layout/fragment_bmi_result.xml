@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/designs"
+    tools:context=".BmiResultFragment"> <!-- Update the tools:context to reflect the Fragment -->
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:padding="10dp"
+        android:src="@drawable/ok"
+        app:layout_constraintBottom_toTopOf="@+id/genderdisplay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/bmidisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="22"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bmicategorydispaly"
+        app:layout_constraintEnd_toEndOf="@+id/genderdisplay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/genderdisplay"
+        app:layout_constraintTop_toBottomOf="@+id/genderdisplay" />
+
+    <TextView
+        android:id="@+id/genderdisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bmidisplay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Gender"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bmidisplay"
+        app:layout_constraintEnd_toEndOf="@+id/imageview"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/imageview"
+        app:layout_constraintTop_toBottomOf="@+id/imageview" />
+
+    <TextView
+        android:id="@+id/bmicategorydispaly"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/genderdisplay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Your BMI Category Is"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bmidisplay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/bmidisplay"
+        app:layout_constraintTop_toBottomOf="@+id/bmidisplay" />
+
+    <Button
+        android:id="@+id/gotomain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:background="#000000"
+        android:text="GOOD!"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bmicategorydispaly"
+        app:layout_constraintStart_toStartOf="@+id/bmicategorydispaly" />
+</androidx.constraintlayout.widget.ConstraintLayout>

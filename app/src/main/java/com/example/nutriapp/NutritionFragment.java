@@ -1,162 +1,163 @@
 package com.example.nutriapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import okhttp3.*;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class NutritionFragment extends Fragment {
 
-    private EditText heightInput, weightInput;
-    private Spinner activityLevelSpinner;
-    private TextView resultText, nutrientBreakdownText, mealTimingText, nutritionalTipsText;
-    private Button calculateButton;
-
-    // Replace with your actual Edamam API key
-    private static final String API_KEY = "4759714ef0msh8911b6e20138358p144449jsnfe564f842526";
+    private RecyclerView recyclerViewMeals;
+    private Button buttonLogMeal;
+    private TextView textViewMacronutrients;
+    private TextView textViewLoggedMeals;
+    private List<Meal> mealList;
+    private MealAdapter mealAdapter;
+    private OkHttpClient client;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_nutrition, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_nutrition, container, false);
 
-        initializeUIComponents(view);
-        setupSpinners();
-        calculateButton.setOnClickListener(v -> calculateNutrition());
+        // Initialize UI components
+        recyclerViewMeals = rootView.findViewById(R.id.recyclerViewMeals);
+        buttonLogMeal = rootView.findViewById(R.id.buttonLogMeal);
+        textViewMacronutrients = rootView.findViewById(R.id.textViewMacronutrients);
+        textViewLoggedMeals = rootView.findViewById(R.id.textViewLoggedMeals);
 
-        return view;
+        // Set up RecyclerView for displaying logged meals
+        mealList = new ArrayList<>();
+        mealAdapter = new MealAdapter(mealList);
+        recyclerViewMeals.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewMeals.setAdapter(mealAdapter);
+
+        // Set up OkHttpClient
+        client = new OkHttpClient();
+
+        // Set up button click listener for logging a new meal
+        buttonLogMeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddMealDialog();
+            }
+        });
+
+        // Make API call to retrieve nutrition information
+        fetchNutritionData();
+
+        return rootView;
     }
 
-    private void initializeUIComponents(View view) {
-        heightInput = view.findViewById(R.id.height);
-        weightInput = view.findViewById(R.id.weight);
-        activityLevelSpinner = view.findViewById(R.id.activityLevelSpinner);
-        resultText = view.findViewById(R.id.resultText);
-        nutrientBreakdownText = view.findViewById(R.id.nutrientBreakdownTextView);
-        mealTimingText = view.findViewById(R.id.mealTimingTextView);
-        nutritionalTipsText = view.findViewById(R.id.nutritionalTipsTextView);
-        calculateButton = view.findViewById(R.id.calculateButton);
-    }
-
-    private void setupSpinners() {
-        ArrayAdapter<CharSequence> activityAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.activity_level_options, android.R.layout.simple_spinner_item);
-        activityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        activityLevelSpinner.setAdapter(activityAdapter);
-    }
-
-    private void calculateNutrition() {
-        String heightStr = heightInput.getText().toString();
-        String weightStr = weightInput.getText().toString();
-        if (TextUtils.isEmpty(heightStr) || TextUtils.isEmpty(weightStr)) {
-            Toast.makeText(getActivity(), "Please enter height and weight", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        double height = Double.parseDouble(heightStr);
-        double weight = Double.parseDouble(weightStr);
-        String activityLevel = activityLevelSpinner.getSelectedItem().toString();
-
-        double calories = calculateCalories(height, weight, activityLevel);
-        resultText.setText(getString(R.string.calories_result, calories));
-
-        // Retrieve meal suggestions and display them
-        retrieveMealSuggestions(calories);
-    }
-
-    private double calculateCalories(double height, double weight, String activityLevel) {
-        // Simplified example calculation without gender
-        // Adjust this method based on your specific calculation requirements
-        double bmr = 10 * weight + 6.25 * height - 5 * 30 + 5; // Example for male, adjust as needed
-        double multiplier = getActivityLevelMultiplier(activityLevel);
-        return bmr * multiplier;
-    }
-
-    private double getActivityLevelMultiplier(String activityLevel) {
-        switch (activityLevel) {
-            case "Sedentary":
-                return 1.2;
-            case "Lightly active":
-                return 1.375;
-            case "Moderately active":
-                return 1.55;
-            case "Very active":
-                return 1.725;
-            case "Extra active":
-                return 1.9;
-            default:
-                return 1;
-        }
-    }
-
-    private void retrieveMealSuggestions(double calories) {
-        OkHttpClient client = new OkHttpClient();
-        String apiUrl = "https://edamam-edamam-nutrition-analysis.p.rapidapi.com/api/nutrition-details?beta=true&force=true&ingr=chicken"; // Example ingredient, replace as needed
-
+    private void fetchNutritionData() {
         Request request = new Request.Builder()
-                .url(apiUrl)
-                .header("X-RapidAPI-Key", API_KEY)
-                .header("X-RapidAPI-Host", "edamam-edamam-nutrition-analysis.p.rapidapi.com")
+                .url("https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition?query=1%20cup%20of%20Rice%20and%201%20glass%20of%20Milk")
+                .get()
+                .addHeader("X-RapidAPI-Key", "4759714ef0msh8911b6e20138358p144449jsnfe564f842526")
+                .addHeader("X-RapidAPI-Host", "nutrition-by-api-ninjas.p.rapidapi.com")
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                // Handle failure (e.g., show error message)
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(responseBody);
-                        JSONArray foodsArray = jsonObject.getJSONArray("foods");
-                        if (foodsArray.length() > 0) {
-                            JSONObject foodItem = foodsArray.getJSONObject(0);
-                            JSONArray nutrientsArray = foodItem.getJSONArray("foodNutrients");
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
 
-                            // Parse and format the nutrient breakdown
-                            StringBuilder nutrientBreakdown = new StringBuilder("Nutrient Breakdown:\n");
-                            for (int i = 0; i < nutrientsArray.length(); i++) {
-                                JSONObject nutrient = nutrientsArray.getJSONObject(i);
-                                String nutrientName = nutrient.getString("nutrientName");
-                                double nutrientValue = nutrient.getDouble("value");
-                                String unitName = nutrient.getString("unitName");
+                // Parse JSON response
+                try {
+                    JSONObject jsonResponse = new JSONObject(response.body().string());
+                    JSONArray foodsArray = jsonResponse.getJSONArray("foods");
 
-                                nutrientBreakdown.append(nutrientName)
-                                        .append(": ")
-                                        .append(nutrientValue)
-                                        .append(" ")
-                                        .append(unitName)
-                                        .append("\n");
-                            }
+                    // Extract nutrition information for each food item
+                    for (int i = 0; i < foodsArray.length(); i++) {
+                        JSONObject foodObject = foodsArray.getJSONObject(i);
+                        String foodName = foodObject.getString("food_name");
+                        String servingSize = foodObject.getString("serving_size");
+                        String calories = foodObject.getString("calories");
 
-                            // Parse meal suggestions and display them
-                            String mealSuggestions = foodItem.optString("mealSuggestions", "No meal suggestions available");
-                            getActivity().runOnUiThread(() -> {
-                                nutrientBreakdownText.setText(nutrientBreakdown.toString());
-                                mealTimingText.setText("Meal Timing Recommendations:\n"); // You can set meal timing here
-                                nutritionalTipsText.setText("Nutritional Tips:\n"); // You can set nutritional tips here
-                            });
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        // Create a Meal object and add it to the mealList
+                        Meal meal = new Meal(foodName, servingSize, calories);
+                        mealList.add(meal);
                     }
+
+                    // Update RecyclerView with the retrieved meal data
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mealAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // Handle JSON parsing error
                 }
             }
         });
+    }
+
+    private void showAddMealDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_meal, null);
+        builder.setView(dialogView);
+
+        EditText editTextFoodName = dialogView.findViewById(R.id.editTextFoodName);
+
+        builder.setPositiveButton("Add Meal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the meal name entered by the user
+                String foodName = editTextFoodName.getText().toString();
+
+                // Create a Meal object and add it to the mealList
+                // Here, you might want to implement the logic to fetch nutrition information
+                // based on the meal name entered by the user
+                // For demonstration purposes, I'm just adding the meal with empty nutrition information
+                Meal meal = new Meal(foodName, "", "");
+                mealList.add(meal);
+                mealAdapter.notifyDataSetChanged();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

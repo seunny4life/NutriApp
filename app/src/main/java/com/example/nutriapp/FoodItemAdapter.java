@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> {
-    private List<FoodItem> foodItems;
+    private final List<FoodItem> foodItems;
 
     // Constructor to initialize the adapter with a list of food items
     public FoodItemAdapter(List<FoodItem> foodItems) {

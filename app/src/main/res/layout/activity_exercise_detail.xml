@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_exercise_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/designs"
+    android:hardwareAccelerated="false"
+    tools:context=".ExerciseDetailActivity">
+
+    <TextView
+        android:id="@+id/exerciseNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/exerciseImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/exerciseImageView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@string/exercise_image"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseNameTextView"
+        app:srcCompat="@drawable/ic_exercise_placeholder" />
+
+    <TextView
+        android:id="@+id/exerciseDurationTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseImageView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseImageView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseImageView"
+        tools:text="Duration: 30 mins" />
+
+    <NumberPicker
+        android:id="@+id/durationNumberPicker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:theme="@style/CustomNumberPickerStyle"
+        android:value="30"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseDurationTextView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseDurationTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseDurationTextView" />
+
+    <Button
+        android:id="@+id/startPauseButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/a4_grad"
+        android:text="Start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
+        app:layout_constraintStart_toStartOf="@+id/durationNumberPicker" />
+
+    <TextView
+        android:id="@+id/exerciseDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseImageView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseImageView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseDurationTextView"
+        tools:text="Exercise Description" />
+
+    <TextView
+        android:id="@+id/exerciseBenefitsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseDescriptionTextView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseDescriptionTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseDescriptionTextView"
+        tools:text="Exercise Benefits" />
+
+    <TextView
+        android:id="@+id/sessionStatusTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/startPauseButton"
+        app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
+        app:layout_constraintStart_toStartOf="@+id/durationNumberPicker"
+        app:layout_constraintTop_toBottomOf="@+id/durationNumberPicker" />
+
+    <Button
+        android:id="@+id/skipBreakButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg_white"
+        android:text="Skip Break"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/startPauseButton"
+        app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
+        app:layout_constraintStart_toStartOf="@+id/durationNumberPicker" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

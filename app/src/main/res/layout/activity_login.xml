@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/actvity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -64,31 +65,30 @@
             android:textColor="@color/white"
             android:textColorHint="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/inputForgotPassword"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
             app:layout_constraintEnd_toEndOf="@+id/inputEmail"
             app:layout_constraintStart_toStartOf="@+id/inputEmail"
             app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/inputForgotPassword"
-            app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-            app:layout_constraintStart_toStartOf="@+id/inputEmail"
-            app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+            app:layout_constraintEnd_toEndOf="@+id/inputPassword"
+            app:layout_constraintStart_toStartOf="@+id/inputPassword"
+            app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/buttonIcloud.com"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/buttonSignIn"
-            app:layout_constraintStart_toStartOf="@+id/buttonSignIn"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSignIn">
+            app:layout_constraintStart_toStartOf="@+id/buttonSignIn">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,47 +116,21 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
-            app:layout_constraintEnd_toEndOf="@+id/inputPassword"
-            app:layout_constraintStart_toStartOf="@+id/inputPassword"
-            app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
         <Button
             android:id="@+id/buttonSignIn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_bg_white"
             android:text="@string/sign_in"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="@+id/inputForgotPassword"
             app:layout_constraintStart_toStartOf="@+id/inputForgotPassword"
             app:layout_constraintTop_toBottomOf="@+id/inputForgotPassword" />
-
-        <Button
-            android:id="@+id/buttonIcloud.com"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/btn_bg"
-            android:text="@string/icloud_com"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonGoogle" />
-
-        <Button
-            android:id="@+id/buttonGoogle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/btn_bg"
-            android:text="@string/google"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonIcloud.com"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="@+id/buttonIcloud.com"
-            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

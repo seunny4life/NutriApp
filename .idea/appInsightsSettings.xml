@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.nutriapp" />
-                  <option name="mobileSdkAppId" value="1:920170127025:android:988f2cdba03a87ecaf4c90" />
-                  <option name="projectId" value="nutriapp" />
-                  <option name="projectNumber" value="920170127025" />
+                  <option name="mobileSdkAppId" value="1:544104242769:android:520ba6ac395e33538ea270" />
+                  <option name="projectId" value="nutriapp-4ea9b" />
+                  <option name="projectNumber" value="544104242769" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

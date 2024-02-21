@@ -3,6 +3,7 @@ package com.example.nutriapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ScrollView scrollView;
     private FrameLayout fragmentContainer;
+    private Button bmiButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         scrollView = findViewById(R.id.scrollView2);
         fragmentContainer = findViewById(R.id.fragment_container);
+        bmiButton = findViewById(R.id.bmi);
+
+        bmiButton.setOnClickListener(v -> {
+               // Replace the current fragment with the BMIFragment
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new BMIFragment()) // Replace BMIFragment() with your actual fragment class
+                    .addToBackStack(null)  // Allows users to go back to the previous fragment/state
+                    .commit();
+        });
+
         bottomNavigation();
     }
 
@@ -59,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentContainer.setVisibility(View.VISIBLE);
 
                 if (itemId == R.id.accountActivity) {
-                    selectedFragment = new AccountSettingsFragment();
+                    selectedFragment = new AccountFragment();
                 } else if (itemId == R.id.fragmentNutrition) {
                     selectedFragment = new NutritionFragment();
                 } else if (itemId == R.id.fragmentCalories) {
@@ -77,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
+
 
     private void displayPersonalizedContent() {
         // Implement logic to display personalized content

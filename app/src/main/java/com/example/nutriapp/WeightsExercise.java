@@ -1,26 +1,36 @@
 package com.example.nutriapp;
 
-// WeightsExercise.java
-public class WeightsExercise {
-    private final String name;
-    private final int sets;
-    private final int reps;
+public class WeightsExercise extends Exercise {
+    private int sets;
+    private int reps;
 
-    public WeightsExercise(String name, int sets, int reps) {
-        this.name = name;
-        this.sets = sets;
-        this.reps = reps;
+    // Constructor
+    public WeightsExercise(String name, String duration, int imageResourceId, String description, String benefits) {
+        super(name, duration, imageResourceId, description, benefits, "Weights");
     }
 
-    public String getName() {
-        return name;
+    // Returns formatted sets x reps
+    public String getRepsSets() {
+        return sets + "x" + reps;
     }
 
+    // Getter for sets
     public int getSets() {
         return sets;
     }
 
+    // Setter for sets
+    public void setSets(int sets) {
+        this.sets = sets;
+    }
+
+    // Getter for reps
     public int getReps() {
         return reps;
+    }
+
+    // Setter for reps
+    public void setReps(int reps) {
+        this.reps = reps;
     }
 }

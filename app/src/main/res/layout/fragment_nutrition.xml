@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<!-- fragment_nutrition.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentNutrition"
     android:layout_width="match_parent"
@@ -7,76 +6,36 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter your information:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/height"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Height"
-        android:inputType="numberDecimal" />
-
-    <Spinner
-        android:id="@+id/heightUnitSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Weight"
-        android:inputType="numberDecimal" />
-
-    <Spinner
-        android:id="@+id/weightUnitSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/activityLevelSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+    <!-- Button for logging a new meal -->
     <Button
-        android:id="@+id/calculateButton"
+        android:id="@+id/buttonLogMeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Meal" />
+
+    <!-- TextView for displaying macronutrients summary -->
+    <TextView
+        android:id="@+id/textViewMacronutrients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Macronutrients Summary"
+        android:textSize="18sp" />
+
+    <!-- RecyclerView for displaying logged meals -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMeals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Calculate" />
+        android:padding="8dp" />
 
+    <!-- TextView for displaying logged meals -->
     <TextView
-        android:id="@+id/resultText"
+        android:id="@+id/textViewLoggedMeals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Calorie Result"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <!-- Nutrient Breakdown TextView -->
-    <TextView
-        android:id="@+id/nutrientBreakdownTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nutrient Breakdown:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <!-- Meal Timing TextView -->
-    <TextView
-        android:id="@+id/mealTimingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meal Timing Recommendations:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <!-- Nutritional Tips TextView -->
-    <TextView
-        android:id="@+id/nutritionalTipsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nutritional Tips:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:padding="8dp"
+        android:text="Logged Meals"
+        android:textSize="18sp" />
 
 </LinearLayout>
