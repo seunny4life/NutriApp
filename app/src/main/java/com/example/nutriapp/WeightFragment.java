@@ -62,7 +62,7 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
     private List<Exercise> generateWeightExercises() {
         List<Exercise> exercises = new ArrayList<>();
         exercises.add(new WeightsExercise("Squats", "1", R.drawable.cat_cow_stretch_a, "Description here", "Benefits here"));
-        exercises.add(new WeightsExercise("Squats", "1", R.drawable.cat_cow_stretch_a, "Description here", "Benefits here"));
+        exercises.add(new WeightsExercise("drt_land_swim_a", "1", R.drawable.drt_land_swim_a, "Description here", "Benefits here"));
 
         // Add more exercises as needed
         return exercises;

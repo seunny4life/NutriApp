@@ -1,4 +1,3 @@
-
 package com.example.nutriapp;
 
 import android.content.Intent;
@@ -12,13 +11,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ExerciseDetailActivity extends AppCompatActivity {
-    private TextView nameTextView, durationTextView, sessionStatusTextView, descriptionTextView, benefitsTextView, breakStatusTextView;
+    private TextView nameTextView, durationTextView, sessionStatusTextView, descriptionTextView, benefitsTextView;
     private ImageView imageView;
     private NumberPicker durationNumberPicker;
-    private Button startPauseButton, skipBreakButton;
+    private Button startPauseButton, skipBreakButton, skipExerciseButton;
     private boolean isExerciseRunning = false;
     private CountDownTimer countDownTimer;
     private long remainingTimeMillis = 0;
+    private boolean isBreakTime = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +28,38 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         initializeViews();
         retrieveAndSetExerciseDetails();
 
-        startPauseButton.setOnClickListener(v -> {
-            if (isExerciseRunning) {
-                pauseCountdownTimer();
-            } else {
-                long millisInFuture = remainingTimeMillis > 0 ? remainingTimeMillis : durationNumberPicker.getValue() * 60000L; // Convert minutes to milliseconds
-                startCountdownTimer(millisInFuture);
+        startPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExerciseRunning) {
+                    pauseCountdownTimer();
+                } else {
+                    long millisInFuture = remainingTimeMillis > 0 ? remainingTimeMillis : durationNumberPicker.getValue() * 60000L; // Convert minutes to milliseconds
+                    startCountdownTimer(millisInFuture);
+                }
             }
         });
 
-        durationNumberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            if (isExerciseRunning) {
-                adjustRemainingTime(oldVal, newVal);
+        durationNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (isExerciseRunning) {
+                    adjustRemainingTime(oldVal, newVal);
+                }
             }
         });
 
-        skipBreakButton.setOnClickListener(v -> {
-            if (!isExerciseRunning) {
-                moveToNextExercise();
+        skipExerciseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skipExercise();
+            }
+        });
+
+        skipBreakButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skipBreak();
             }
         });
     }
@@ -56,12 +70,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         durationTextView = findViewById(R.id.exerciseDurationTextView);
         durationNumberPicker = findViewById(R.id.durationNumberPicker);
         startPauseButton = findViewById(R.id.startPauseButton);
+        skipBreakButton = findViewById(R.id.skipBreakButton);
         sessionStatusTextView = findViewById(R.id.sessionStatusTextView);
         descriptionTextView = findViewById(R.id.exerciseDescriptionTextView);
         benefitsTextView = findViewById(R.id.exerciseBenefitsTextView);
-        breakStatusTextView = findViewById(R.id.breakStatusTextView);
-        skipBreakButton = findViewById(R.id.skipBreakButton);
-
+        skipExerciseButton = findViewById(R.id.skipExerciseButton);
         durationNumberPicker.setMinValue(1);
         durationNumberPicker.setMaxValue(120);
     }
@@ -79,12 +92,20 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 prepareCardioExercise();
                 String duration = intent.getStringExtra("EXERCISE_DURATION");
                 durationTextView.setText("Duration: " + duration);
+
+                // Hide Skip buttons for cardio exercises
+                skipBreakButton.setVisibility(View.GONE);
+                skipExerciseButton.setVisibility(View.GONE);
             } else {
                 prepareWeightExercise();
                 String description = intent.getStringExtra("EXERCISE_DESCRIPTION");
                 String benefits = intent.getStringExtra("EXERCISE_BENEFITS");
                 descriptionTextView.setText(description);
                 benefitsTextView.setText(benefits);
+
+                // Show Skip buttons for weight exercises
+                skipBreakButton.setVisibility(View.VISIBLE);
+                skipExerciseButton.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -117,8 +138,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if (isExerciseRunning) {
-                    moveToNextExercise();
+                if (isBreakTime) {
+                    // If it's break time, inform the user and allow skipping
+                    showSkipBreakButton();
                 } else {
                     exerciseFinished();
                 }
@@ -126,7 +148,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         }.start();
         isExerciseRunning = true;
         startPauseButton.setText("Pause");
-        sessionStatusTextView.setText("Exercise running");
+        if (isBreakTime) {
+            sessionStatusTextView.setText("Break time");
+        } else {
+            sessionStatusTextView.setText("Exercise running");
+        }
     }
 
     private void pauseCountdownTimer() {
@@ -147,9 +173,8 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     private void exerciseFinished() {
         isExerciseRunning = false;
         startPauseButton.setText("Start");
-        sessionStatusTextView.setText("Break time");
-        breakStatusTextView.setVisibility(View.VISIBLE);
-        skipBreakButton.setVisibility(View.VISIBLE);
+        sessionStatusTextView.setText("Exercise completed");
+        remainingTimeMillis = 0;
     }
 
     private void adjustRemainingTime(int oldVal, int newVal) {
@@ -171,15 +196,30 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         startCountdownTimer(remainingTimeMillis);
     }
 
-    private void moveToNextExercise() {
-        // Implement logic to move to the next exercise after the break or skip the break
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void skipExercise() {
+        // Check if countDownTimer is not null before attempting to cancel it
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
+        // Logic to skip the current exercise and move to the next one
+        remainingTimeMillis = 0; // Set remaining time to 0 to finish exercise immediately
+        exerciseFinished();
+    }
+
+    private void skipBreak() {
+        // Logic to skip the break time and start the next exercise immediately
+        isBreakTime = false;
+        // Start the next exercise immediately
+        long millisInFuture = durationNumberPicker.getValue() * 60000L; // Convert minutes to milliseconds
+        startCountdownTimer(millisInFuture);
+        hideSkipBreakButton();
+    }
+
+    private void showSkipBreakButton() {
+        skipBreakButton.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSkipBreakButton() {
+        skipBreakButton.setVisibility(View.GONE);
     }
 }

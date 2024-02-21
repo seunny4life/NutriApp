@@ -111,6 +111,20 @@
         app:layout_constraintStart_toStartOf="@+id/durationNumberPicker"
         app:layout_constraintTop_toBottomOf="@+id/durationNumberPicker" />
 
+    <TextView
+        android:id="@+id/breakStatusTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/skipBreakButton"
+        app:layout_constraintEnd_toEndOf="@+id/startPauseButton"
+        app:layout_constraintStart_toStartOf="@+id/startPauseButton"
+        app:layout_constraintTop_toBottomOf="@+id/startPauseButton" />
+
     <Button
         android:id="@+id/skipBreakButton"
         android:layout_width="match_parent"
@@ -121,6 +135,20 @@
         android:background="@drawable/btn_bg_white"
         android:text="Skip Break"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/startPauseButton"
+        app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
+        app:layout_constraintStart_toStartOf="@+id/durationNumberPicker" />
+
+    <Button
+        android:id="@+id/skipExerciseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg_white"
+        android:text="Skip Exercise"
         app:layout_constraintBottom_toBottomOf="@+id/startPauseButton"
         app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
         app:layout_constraintStart_toStartOf="@+id/durationNumberPicker" />
