@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/okButton"
         app:layout_constraintEnd_toEndOf="@+id/titleTextView"
@@ -118,17 +118,16 @@
             <!-- Spacer View -->
             <ImageView
                 android:id="@+id/exerciseImageView"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="24dp"
+                android:background="@drawable/img_daily_water_intake1"
                 android:contentDescription="@string/exercise_image"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="@+id/exerciseNameTextView"
                 app:layout_constraintStart_toStartOf="@+id/exerciseNameTextView"
-                app:layout_constraintTop_toBottomOf="@+id/exerciseNameTextView"
-                app:srcCompat="@drawable/ic_exercise_placeholder"
-                android:background="@drawable/img_daily_water_intake1"
-                android:importantForAccessibility="no"
-                android:scaleType="centerCrop" />
+                app:layout_constraintTop_toBottomOf="@+id/exerciseNameTextView" />
 
             <!-- Summary and Recommendations -->
             <TextView
@@ -165,8 +164,11 @@
         android:id="@+id/okButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_bg_white"
         android:contentDescription="Confirm and proceed to workout history"
         android:text="Ok!"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/scrollView3"
         app:layout_constraintStart_toStartOf="@+id/scrollView3" />

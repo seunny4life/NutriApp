@@ -72,8 +72,10 @@
         android:id="@+id/durationNumberPicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:theme="@style/CustomNumberPickerStyle"
+        app:layout_constraintBottom_toTopOf="@+id/startPauseButton"
         app:layout_constraintEnd_toEndOf="@+id/exerciseDurationTextView"
         app:layout_constraintStart_toStartOf="@+id/exerciseDurationTextView"
         app:layout_constraintTop_toBottomOf="@+id/exerciseDurationTextView" />
