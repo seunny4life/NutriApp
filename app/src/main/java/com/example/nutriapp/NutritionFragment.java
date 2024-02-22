@@ -132,7 +132,7 @@ public class NutritionFragment extends Fragment {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_meal, null);
         builder.setView(dialogView);
 
-        EditText editTextFoodName = dialogView.findViewById(R.id.editTextFoodName);
+        EditText editTextFoodName = dialogView.findViewById(R.id.mealNameEditText);
 
         builder.setPositiveButton("Add Meal", new DialogInterface.OnClickListener() {
             @Override

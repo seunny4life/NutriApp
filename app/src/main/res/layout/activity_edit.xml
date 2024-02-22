@@ -13,11 +13,33 @@
     <!-- Edit Text Fields for User Information -->
 
     <EditText
-        android:id="@+id/firstName"
-
+        android:id="@+id/editTextDateOfBirth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:autofillHints="Date of Birth"
+        android:background="@drawable/input_bg"
+        android:drawableStart="@drawable/date_range"
+        android:ems="10"
+        android:hint="Date of Birth"
+        android:inputType="date"
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintEnd_toEndOf="@+id/location"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/location"
+        app:layout_constraintTop_toBottomOf="@+id/location"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:autofillHints=""
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/person"
@@ -31,17 +53,16 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/lastName"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/lastName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/person"
@@ -56,17 +77,18 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/location"
         app:layout_constraintEnd_toEndOf="@+id/firstName"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/firstName"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+        app:layout_constraintTop_toBottomOf="@+id/firstName"
+        app:layout_constraintVertical_bias="0.5" />
 
     <EditText
         android:id="@+id/location"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/person"
@@ -81,34 +103,36 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextDateOfBirth"
         app:layout_constraintEnd_toEndOf="@+id/lastName"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/lastName"
-        app:layout_constraintTop_toBottomOf="@+id/lastName" />
+        app:layout_constraintTop_toBottomOf="@+id/lastName"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/btn_bg_black"
+        android:background="@drawable/btn_bg_white"
         android:text="@string/saved"
         android:textColor="@color/black"
+
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonCancel"
-        app:layout_constraintEnd_toEndOf="@+id/location"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="@+id/location"
-        app:layout_constraintTop_toBottomOf="@+id/location"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextDateOfBirth"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/editTextDateOfBirth"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDateOfBirth"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/buttonCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/btn_bg_black"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg_white"
         android:text="@string/cancel"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -121,16 +145,18 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/edit_profile"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="35sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/firstName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="spread" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +42,11 @@ public class CardioFragment extends Fragment implements ExerciseAdapter.OnExerci
         return exercises;
     }
 
-    // Update method signature to include position and update the method's functionality as needed
     @Override
     public void onExerciseClick(Exercise exercise, int position) {
-        // Your existing code for handling click events, potentially modified to use the position if necessary
         Intent intent = new Intent(getContext(), ExerciseDetailActivity.class);
         intent.putExtra("EXERCISE_NAME", exercise.getName());
-        String durationNumeric = exercise.getDuration().replaceAll("[^0-9]", ""); // Extract numeric part
-        intent.putExtra("EXERCISE_DURATION", durationNumeric);
+        intent.putExtra("EXERCISE_DURATION", exercise.getDuration());
         intent.putExtra("EXERCISE_IMAGE", exercise.getImageResourceId());
         intent.putExtra("EXERCISE_DESCRIPTION", exercise.getDescription());
         intent.putExtra("EXERCISE_BENEFITS", exercise.getBenefits());

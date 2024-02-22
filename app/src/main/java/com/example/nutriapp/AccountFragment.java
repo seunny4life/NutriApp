@@ -34,7 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
+import com.google.firebase.storage.UploadTask;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -44,15 +45,12 @@ public class AccountFragment extends Fragment {
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 22;
     private final int PERMISSION_REQUEST_CODE = 100;
-    private long lastClickTime = 0;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
     private SharedPreferences sharedPreferences;
-    private TextView displayEmail;
-    private TextView displayLocation;
-    private Button logoutButton;
+    private TextView displayEmail, displayLocation, logoutButton, settingsTextView, changePasswordTextView, editPersonalInfoTextView, workoutHistoryTextView;
     private boolean isFragmentAttached = false;
 
     @Nullable
@@ -64,8 +62,10 @@ public class AccountFragment extends Fragment {
         displayEmail = view.findViewById(R.id.displayEmail);
         displayLocation = view.findViewById(R.id.displayLocation);
         logoutButton = view.findViewById(R.id.logoutBack);
-        TextView editPersonalInfoTextView = view.findViewById(R.id.EditPersonalInfo);
-        TextView changePasswordTextView = view.findViewById(R.id.ChangePasswordLiink);
+        editPersonalInfoTextView = view.findViewById(R.id.EditPersonalInfo);
+        changePasswordTextView = view.findViewById(R.id.ChangePasswordLiink);
+        settingsTextView = view.findViewById(R.id.settings);
+        workoutHistoryTextView = view.findViewById(R.id.workoutHistory);
 
         sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
@@ -75,16 +75,12 @@ public class AccountFragment extends Fragment {
 
         loadUserProfile();
 
-        imageViewProfile.setOnClickListener(v -> {
-            long now = System.currentTimeMillis();
-            if (now - lastClickTime < 500) {
-                checkPermissionAndSelectImage();
-            }
-            lastClickTime = now;
-        });
-
+        imageViewProfile.setOnClickListener(v -> checkPermissionAndSelectImage());
         editPersonalInfoTextView.setOnClickListener(v -> editPersonalInfo(v));
         changePasswordTextView.setOnClickListener(v -> changePassword(v));
+        settingsTextView.setOnClickListener(v ->  accountSettings(v));
+        workoutHistoryTextView.setOnClickListener(v -> workoutHistory(v));
+
         logoutButton.setOnClickListener(v -> showLogoutConfirmationDialog());
 
         return view;
@@ -107,32 +103,25 @@ public class AccountFragment extends Fragment {
         if (currentUser != null) {
             String savedImageUrl = sharedPreferences.getString("profileImageUrl", null);
             if (savedImageUrl != null && isFragmentAttached) {
-                Glide.with(this)
-                        .load(savedImageUrl)
-                        .placeholder(R.drawable.person)
-                        .into(imageViewProfile);
+                Glide.with(this).load(savedImageUrl).placeholder(R.drawable.person).into(imageViewProfile);
             } else {
-                databaseReference.child("Users").child(currentUser.getUid()).child("profileImageUrl")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists() && isFragmentAttached) {
-                                    String imageUrl = snapshot.getValue(String.class);
-                                    saveImageUrlToPersistentStorage(imageUrl);
-                                    Glide.with(AccountFragment.this)
-                                            .load(imageUrl)
-                                            .placeholder(R.drawable.person)
-                                            .into(imageViewProfile);
-                                }
-                            }
+                databaseReference.child("Users").child(currentUser.getUid()).child("profileImageUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists() && isFragmentAttached) {
+                            String imageUrl = snapshot.getValue(String.class);
+                            saveImageUrlToPersistentStorage(imageUrl);
+                            Glide.with(AccountFragment.this).load(imageUrl).placeholder(R.drawable.person).into(imageViewProfile);
+                        }
+                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                if (isFragmentAttached) {
-                                    Toast.makeText(getContext(), "Failed to load user profile image.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (isFragmentAttached) {
+                            Toast.makeText(getContext(), "Failed to load user profile image.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         }
     }
@@ -171,46 +160,63 @@ public class AccountFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                imageViewProfile.setImageBitmap(bitmap);
-                uploadImage();
+                Bitmap optimizedBitmap = getResizedBitmap(bitmap, 500); // Example resize to max 500px
+                imageViewProfile.setImageBitmap(optimizedBitmap);
+                uploadImage(optimizedBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void uploadImage() {
-        if (filePath != null && currentUser != null) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private void uploadImage(Bitmap bitmap) {
+        if (bitmap != null && currentUser != null) {
             ProgressDialog progressDialog = new ProgressDialog(getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
             String imageName = UUID.randomUUID().toString();
             StorageReference ref = storageReference.child("profile_images/" + imageName);
 
-            ref.putFile(filePath)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Profile Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                            String downloadUrl = uri.toString();
-                            saveImageUrlToDatabase(downloadUrl);
-                            saveImageUrlToPersistentStorage(downloadUrl);
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                    });
+            UploadTask uploadTask = ref.putBytes(data);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Profile Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String downloadUrl = uri.toString();
+                    saveImageUrlToDatabase(downloadUrl);
+                    saveImageUrlToPersistentStorage(downloadUrl);
+                });
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }).addOnProgressListener(taskSnapshot -> {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                progressDialog.setMessage("Uploaded " + (int) progress + "%");
+            });
         }
     }
 
@@ -229,13 +235,10 @@ public class AccountFragment extends Fragment {
         new AlertDialog.Builder(getContext())
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to log out?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        clearSavedData();
-                        FirebaseAuth.getInstance().signOut();
-                        redirectToLogin();
-                    }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    clearSavedData();
+                    FirebaseAuth.getInstance().signOut();
+                    redirectToLogin();
                 })
                 .setNegativeButton("No", null)
                 .show();
@@ -260,4 +263,13 @@ public class AccountFragment extends Fragment {
     public void changePassword(View view) {
         startActivity(new Intent(getContext(), PasswordChangedActivity.class));
     }
+
+    public void accountSettings(View view) {
+        startActivity(new Intent(getContext(), SettingActivity.class));
+    }
+
+    public void workoutHistory(View view) {
+        startActivity(new Intent(getContext(),WorkoutHistoryActivity.class));
+    }
+
 }

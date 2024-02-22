@@ -33,7 +33,7 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
 
     private List<Exercise> exercises;
     private ExerciseAdapter adapter;
-    private Handler exerciseHandler = new Handler(Looper.getMainLooper());
+    private final Handler exerciseHandler = new Handler(Looper.getMainLooper());
     private int currentExerciseIndex = 0;
     private ToneGenerator toneGenerator;
     private Vibrator vibrator;
@@ -63,7 +63,6 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
         List<Exercise> exercises = new ArrayList<>();
         exercises.add(new WeightsExercise("Squats", "1", R.drawable.cat_cow_stretch_a, "Description here", "Benefits here"));
         exercises.add(new WeightsExercise("drt_land_swim_a", "1", R.drawable.drt_land_swim_a, "Description here", "Benefits here"));
-
         // Add more exercises as needed
         return exercises;
     }

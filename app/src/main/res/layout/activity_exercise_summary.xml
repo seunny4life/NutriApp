@@ -116,16 +116,26 @@
                 android:textSize="18sp" />
 
             <!-- Spacer View -->
-            <View
+            <ImageView
+                android:id="@+id/exerciseImageView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5" />
+                android:layout_height="200dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/exercise_image"
+                app:layout_constraintEnd_toEndOf="@+id/exerciseNameTextView"
+                app:layout_constraintStart_toStartOf="@+id/exerciseNameTextView"
+                app:layout_constraintTop_toBottomOf="@+id/exerciseNameTextView"
+                app:srcCompat="@drawable/ic_exercise_placeholder"
+                android:background="@drawable/img_daily_water_intake1"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop" />
 
             <!-- Summary and Recommendations -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+
                 android:text="Summary"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp"
@@ -136,6 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:paddingTop="16dp"
                 android:text="Here is a summary of your workout and some recommendations based on your performance."
                 android:textSize="16sp" />
 
@@ -152,15 +163,13 @@
 
     <Button
         android:id="@+id/okButton"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_bg_black"
+        android:contentDescription="Confirm and proceed to workout history"
         android:text="Ok!"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/scrollView3"
         app:layout_constraintStart_toStartOf="@+id/scrollView3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
