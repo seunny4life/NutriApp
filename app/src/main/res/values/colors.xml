@@ -19,4 +19,7 @@
     <color name="translucent_blue">#220000FF</color>
     <color name="translucent_white">#AAFFFFFF</color>
     <color name="translucent_purple_200">#662286C3</color>
+    <color name="colorPrimaryDark">#FF4081</color>
+    <color name="colorAccent">#FFC107</color>
+
 </resources>

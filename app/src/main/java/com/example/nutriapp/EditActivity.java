@@ -43,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
         editFireBaseAuth = FirebaseAuth.getInstance();
         userDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
-        // Initialize button and text view click listeners
+        // Initialize buttonSearch and text view click listeners
         setupSaveButton();
         setupCancelButton();
     }

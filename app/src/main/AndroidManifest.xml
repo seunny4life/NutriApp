@@ -20,6 +20,12 @@
         android:theme="@style/Base.Theme.NutriApp"
         tools:targetApi="s">
         <activity
+            android:name=".DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExerciseActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingActivity"
             android:exported="false"
             android:label="@string/title_activity_setting"

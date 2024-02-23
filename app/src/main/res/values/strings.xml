@@ -111,4 +111,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="start">Start</string>
+    <string name="nutritional_information_will_be_displayed_here">Nutritional information will be displayed here.</string>
+    <string name="title_activity_summary">SummaryActivity</string>
 </resources>

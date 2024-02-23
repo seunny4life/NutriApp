@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/totalCaloriesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Calories: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalProteinTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Protein: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalFatTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Fat: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalCarbsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Carbohydrates: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalFiberTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Fiber: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalSugarTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Sugars: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalSodiumTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Sodium: 0"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/totalCholesterolTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Cholesterol: 0"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/calorieGoalEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:hint="Set your calorie goal"
+            android:inputType="number"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/goalTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Goal: 0/0"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/setGoalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Set Goal"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Clear Total"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,11 +1,10 @@
 package com.example.nutriapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 public class WorkoutHistoryActivity extends AppCompatActivity {
 
@@ -14,24 +13,35 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_history);
 
-        // Initialize RecyclerView
-        RecyclerView workoutHistoryRecyclerView = findViewById(R.id.workoutHistoryRecyclerView);
-        workoutHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Retrieve exercise details from intent extras
+        Intent intent = getIntent();
+        if (intent != null) {
+            String exerciseType = intent.getStringExtra("EXERCISE_TYPE");
+            int duration = intent.getIntExtra("DURATION", 0);
+            int caloriesBurned = intent.getIntExtra("CALORIES_BURNED", 0);
+            double distance = intent.getDoubleExtra("DISTANCE", 0.0);
+            int averageHeartRate = intent.getIntExtra("AVERAGE_HEART_RATE", 0);
+            String timestamp = intent.getStringExtra("TIMESTAMP");
 
-        // Fetch workout history data
-        List<WorkoutHistoryItem> workoutHistoryItems = fetchWorkoutHistoryItems();
-
-        // Set up the RecyclerView with the Adapter
-        WorkoutHistoryAdapter adapter = new WorkoutHistoryAdapter(workoutHistoryItems);
-        workoutHistoryRecyclerView.setAdapter(adapter);
+            // Display exercise details including timestamp
+            displayExerciseDetails(exerciseType, duration, caloriesBurned, distance, averageHeartRate, timestamp);
+        }
     }
 
-    private List<WorkoutHistoryItem> fetchWorkoutHistoryItems() {
-        // This method should fetch the actual data. For demonstration, here's some mock data.
-        List<WorkoutHistoryItem> items = new ArrayList<>();
-        items.add(new WorkoutHistoryItem("Running", 30, 300, 5.0, 120, "2023-01-01 10:00"));
-        items.add(new WorkoutHistoryItem("Cycling", 45, 450, 20.0, 135, "2023-01-02 15:00"));
-        // Add more items as needed
-        return items;
+    private void displayExerciseDetails(String exerciseType, int duration, int caloriesBurned, double distance, int averageHeartRate, String timestamp) {
+        // Find TextViews and set their text
+        TextView exerciseTypeTextView = findViewById(R.id.exerciseTypeTextView);
+        TextView durationTextView = findViewById(R.id.durationTextView);
+        TextView caloriesBurnedTextView = findViewById(R.id.caloriesBurnedTextView);
+        TextView distanceTextView = findViewById(R.id.distanceTextView);
+        TextView heartRateTextView = findViewById(R.id.heartRateTextView);
+        TextView timestampTextView = findViewById(R.id.timestampTextView);
+
+        exerciseTypeTextView.setText(exerciseType);
+        durationTextView.setText(String.format(Locale.getDefault(), "%d mins", duration));
+        caloriesBurnedTextView.setText(String.format(Locale.getDefault(), "%d kcal", caloriesBurned));
+        distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distance));
+        heartRateTextView.setText(String.format(Locale.getDefault(), "%d bpm", averageHeartRate));
+        timestampTextView.setText("Timestamp: " + timestamp);
     }
 }

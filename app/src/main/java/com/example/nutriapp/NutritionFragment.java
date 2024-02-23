@@ -1,20 +1,17 @@
 package com.example.nutriapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,142 +19,124 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class NutritionFragment extends Fragment {
+    private TextView foodInfoTextView;
+    private FoodItem lastSearchedFoodItem = null;
+    private ArrayList<FoodItem> addedFoodList = new ArrayList<>();
 
-    private RecyclerView recyclerViewMeals;
-    private Button buttonLogMeal;
-    private TextView textViewMacronutrients;
-    private TextView textViewLoggedMeals;
-    private List<Meal> mealList;
-    private MealAdapter mealAdapter;
-    private OkHttpClient client;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_nutrition, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_nutrition, container, false);
 
-        // Initialize UI components
-        recyclerViewMeals = rootView.findViewById(R.id.recyclerViewMeals);
-        buttonLogMeal = rootView.findViewById(R.id.buttonLogMeal);
-        textViewMacronutrients = rootView.findViewById(R.id.textViewMacronutrients);
-        textViewLoggedMeals = rootView.findViewById(R.id.textViewLoggedMeals);
+        EditText searchEditText = view.findViewById(R.id.searchEditText);
+        foodInfoTextView = view.findViewById(R.id.foodInfoTextView);
+        Button addButton = view.findViewById(R.id.addButton);
+        Button viewSummaryButton = view.findViewById(R.id.viewSummaryButton);
+        Button searchButton = view.findViewById(R.id.searchButton);
 
-        // Set up RecyclerView for displaying logged meals
-        mealList = new ArrayList<>();
-        mealAdapter = new MealAdapter(mealList);
-        recyclerViewMeals.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewMeals.setAdapter(mealAdapter);
+        searchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchFood(textView.getText().toString());
+                return true;
+            }
+            return false;
+        });
 
-        // Set up OkHttpClient
-        client = new OkHttpClient();
-
-        // Set up button click listener for logging a new meal
-        buttonLogMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddMealDialog();
+        addButton.setOnClickListener(v -> {
+            if (lastSearchedFoodItem != null) {
+                addedFoodList.add(lastSearchedFoodItem);
+                Toast.makeText(getContext(), lastSearchedFoodItem.getName() + " added", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "No food item to add", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Make API call to retrieve nutrition information
-        fetchNutritionData();
+        searchButton.setOnClickListener(v -> searchFood(searchEditText.getText().toString()));
 
-        return rootView;
+        viewSummaryButton.setOnClickListener(v -> {
+            SummaryFragment summaryFragment = new SummaryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("addedFoods", addedFoodList); // Ensure FoodItem implements Serializable
+            summaryFragment.setArguments(bundle);
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, summaryFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        return view;
     }
 
-    private void fetchNutritionData() {
-        Request request = new Request.Builder()
-                .url("https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition?query=1%20cup%20of%20Rice%20and%201%20glass%20of%20Milk")
-                .get()
-                .addHeader("X-RapidAPI-Key", "4759714ef0msh8911b6e20138358p144449jsnfe564f842526")
-                .addHeader("X-RapidAPI-Host", "nutrition-by-api-ninjas.p.rapidapi.com")
-                .build();
+    private void searchFood(String query) {
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+            String url = "https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition?query=" + query;
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                // Handle failure (e.g., show error message)
-            }
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("X-RapidAPI-Key", "8bcc326003mshbb7a46ce2fc9253p1f928bjsn53b213315eb8")
+                    .addHeader("X-RapidAPI-Host", "nutrition-by-api-ninjas.p.rapidapi.com")
+                    .build();
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                }
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    JSONArray jsonArray = new JSONArray(responseData);
+                    if (jsonArray.length() > 0) {
+                        JSONObject firstItem = jsonArray.getJSONObject(0);
 
-                // Parse JSON response
-                try {
-                    JSONObject jsonResponse = new JSONObject(response.body().string());
-                    JSONArray foodsArray = jsonResponse.getJSONArray("foods");
+                        lastSearchedFoodItem = new FoodItem(
+                                firstItem.getString("name"),
+                                firstItem.getDouble("calories"),
+                                firstItem.getDouble("serving_size_g"),
+                                firstItem.getDouble("fat_total_g"),
+                                firstItem.getDouble("fat_saturated_g"),
+                                firstItem.getDouble("protein_g"),
+                                firstItem.getDouble("sodium_mg"),
+                                firstItem.getDouble("potassium_mg"),
+                                firstItem.getDouble("cholesterol_mg"),
+                                firstItem.getDouble("carbohydrates_total_g"),
+                                firstItem.getDouble("fiber_g"),
+                                firstItem.getDouble("sugar_g")
+                        );
 
-                    // Extract nutrition information for each food item
-                    for (int i = 0; i < foodsArray.length(); i++) {
-                        JSONObject foodObject = foodsArray.getJSONObject(i);
-                        String foodName = foodObject.getString("food_name");
-                        String servingSize = foodObject.getString("serving_size");
-                        String calories = foodObject.getString("calories");
-
-                        // Create a Meal object and add it to the mealList
-                        Meal meal = new Meal(foodName, servingSize, calories);
-                        mealList.add(meal);
+                        updateUIWithFoodItem(firstItem);
+                    } else {
+                        showToast("No results found");
                     }
-
-                    // Update RecyclerView with the retrieved meal data
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mealAdapter.notifyDataSetChanged();
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    // Handle JSON parsing error
+                } else {
+                    showToast("Response not successful: " + response.message());
                 }
+            } catch (IOException | JSONException e) {
+                showToast("Error fetching data: " + e.getMessage());
+            }
+        }).start();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void updateUIWithFoodItem(JSONObject foodItem) {
+        if (getActivity() == null) return;
+        getActivity().runOnUiThread(() -> {
+            try {
+                foodInfoTextView.setText(String.format("Name: %s\nCalories: %.2f\nServing size (g): %.2f\nTotal fat (g): %.2f\nSaturated fat (g): %.2f\nProtein (g): %.2f\nSodium (mg): %.2f\nPotassium (mg): %.2f\nCholesterol (mg): %.2f\nTotal carbohydrates (g): %.2f\nDietary fiber (g): %.2f\nSugars (g): %.2f",
+                        foodItem.getString("name"), foodItem.getDouble("calories"), foodItem.getDouble("serving_size_g"), foodItem.getDouble("fat_total_g"), foodItem.getDouble("fat_saturated_g"), foodItem.getDouble("protein_g"), foodItem.getDouble("sodium_mg"), foodItem.getDouble("potassium_mg"), foodItem.getDouble("cholesterol_mg"), foodItem.getDouble("carbohydrates_total_g"), foodItem.getDouble("fiber_g"), foodItem.getDouble("sugar_g")
+                ));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
     }
 
-    private void showAddMealDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_meal, null);
-        builder.setView(dialogView);
-
-        EditText editTextFoodName = dialogView.findViewById(R.id.mealNameEditText);
-
-        builder.setPositiveButton("Add Meal", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Get the meal name entered by the user
-                String foodName = editTextFoodName.getText().toString();
-
-                // Create a Meal object and add it to the mealList
-                // Here, you might want to implement the logic to fetch nutrition information
-                // based on the meal name entered by the user
-                // For demonstration purposes, I'm just adding the meal with empty nutrition information
-                Meal meal = new Meal(foodName, "", "");
-                mealList.add(meal);
-                mealAdapter.notifyDataSetChanged();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+    private void showToast(String message) {
+        if (getActivity() == null) return;
+        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show());
     }
 }

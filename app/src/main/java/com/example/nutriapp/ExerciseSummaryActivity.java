@@ -2,6 +2,7 @@ package com.example.nutriapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
         }
 
         Button okButton = findViewById(R.id.okButton);
-        okButton.setOnClickListener(v -> saveWorkoutHistoryToFirestore());
+        okButton.setOnClickListener(v -> navigateToWorkoutHistory());
     }
 
     private void displayExerciseSummary() {
@@ -63,33 +64,29 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void saveWorkoutHistoryToFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Ensure the user is logged in
+    private void navigateToWorkoutHistory() {
+        // Log the intent extras before starting the WorkoutHistoryActivity
+        Log.d("ExerciseSummary", "Navigating to WorkoutHistoryActivity with extras: " +
+                "Exercise Type: " + exerciseType +
+                ", Duration: " + duration +
+                ", Calories Burned: " + caloriesBurned +
+                ", Distance: " + distance +
+                ", Average Heart Rate: " + averageHeartRate +
+                ", Timestamp: " + getCurrentTimestamp());
 
-        // Create a timestamp with the current date and time
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
-
-        WorkoutHistoryItem workoutHistoryItem = new WorkoutHistoryItem(
-                exerciseType,
-                duration,
-                caloriesBurned,
-                distance,
-                averageHeartRate,
-                timestamp
-        );
-
-        db.collection("users").document(userId).collection("workoutHistory").add(workoutHistoryItem)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(ExerciseSummaryActivity.this, "Workout saved successfully", Toast.LENGTH_SHORT).show();
-                    navigateToWorkoutHistory();
-                })
-                .addOnFailureListener(e -> Toast.makeText(ExerciseSummaryActivity.this, "Error saving workout", Toast.LENGTH_SHORT).show());
+        Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
+        intent.putExtra("EXERCISE_TYPE", exerciseType);
+        intent.putExtra("DURATION", duration);
+        intent.putExtra("CALORIES_BURNED", caloriesBurned);
+        intent.putExtra("DISTANCE", distance);
+        intent.putExtra("AVERAGE_HEART_RATE", averageHeartRate);
+        intent.putExtra("TIMESTAMP", getCurrentTimestamp()); // Pass the current timestamp
+        startActivity(intent);
+        finish();
     }
 
-    private void navigateToWorkoutHistory() {
-        Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
-        startActivity(intent);
-        finish(); // Optionally finish this activity
+
+    private String getCurrentTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
     }
 }

@@ -1,41 +1,117 @@
-<!-- fragment_nutrition.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentNutrition"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/designs"
     android:padding="16dp">
 
-    <!-- Button for logging a new meal -->
+
+    <TextView
+        android:id="@+id/noteTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:text="Note: This calculates per 100g unless weight specified"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/foodInfoTextView"
+        app:layout_constraintEnd_toEndOf="@+id/searchButton"
+        app:layout_constraintStart_toStartOf="@+id/searchButton"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+
     <Button
-        android:id="@+id/buttonLogMeal"
-        android:layout_width="wrap_content"
+        android:id="@+id/addButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Log Meal" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_bg_white"
+        android:text="Add"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/viewSummaryButton"
+        app:layout_constraintStart_toStartOf="@+id/foodInfoTextView"
+        app:layout_constraintTop_toBottomOf="@+id/foodInfoTextView" />
 
-    <!-- TextView for displaying macronutrients summary -->
     <TextView
-        android:id="@+id/textViewMacronutrients"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Macronutrients Summary"
-        android:textSize="18sp" />
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="Nutrition "
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/searchEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- RecyclerView for displaying logged meals -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMeals"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Enter food to search"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/searchButton"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <!-- TextView for displaying logged meals -->
     <TextView
-        android:id="@+id/textViewLoggedMeals"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Logged Meals"
-        android:textSize="18sp" />
+        android:id="@+id/foodInfoTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/viewSummaryButton"
+        app:layout_constraintEnd_toEndOf="@+id/noteTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/noteTextView"
+        app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/viewSummaryButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/btn_bg_white"
+        android:text="View Summary"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/addButton"
+        app:layout_constraintEnd_toEndOf="@+id/foodInfoTextView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addButton"
+        app:layout_constraintTop_toTopOf="@+id/addButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg_white"
+        android:text="Search"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/noteTextView"
+        app:layout_constraintEnd_toEndOf="@+id/searchEditText"
+        app:layout_constraintStart_toStartOf="@+id/searchEditText"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
