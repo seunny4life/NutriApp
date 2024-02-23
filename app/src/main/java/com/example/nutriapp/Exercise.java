@@ -45,4 +45,3 @@ public class Exercise {
         return benefits;
     }
 }
-//I want if the user clicks on the  Workout session, they should see both Cardio and Weight exercise

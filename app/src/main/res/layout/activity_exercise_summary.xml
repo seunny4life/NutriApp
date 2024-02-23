@@ -162,7 +162,7 @@
 
     <Button
         android:id="@+id/okButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn_bg_white"

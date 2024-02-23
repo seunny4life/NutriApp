@@ -1,5 +1,6 @@
 package com.example.nutriapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,15 +52,16 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent)); // Default color
         }
 
-        setAnimation(holder.itemView, position);
+        setAnimation(holder.itemView);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void highlightItem(int position) {
         highlightedPosition = position;
-        notifyDataSetChanged(); // Refresh the list to apply highlight effect
+        notifyDataSetChanged();
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
+    private void setAnimation(View viewToAnimate) {
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.item_animation_fade_in);
         viewToAnimate.startAnimation(animation);
     }

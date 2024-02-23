@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class ExerciseSummaryActivity extends AppCompatActivity {
 
@@ -34,45 +37,59 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
             averageHeartRate = extras.getInt("AVERAGE_HEART_RATE", 0);
 
             // Display exercise summary data
-            TextView exerciseTypeTextView = findViewById(R.id.exerciseTypeTextView);
-            TextView durationTextView = findViewById(R.id.durationTextView);
-            TextView caloriesBurnedTextView = findViewById(R.id.caloriesBurnedTextView);
-            TextView distanceTextView = findViewById(R.id.distanceTextView);
-            TextView heartRateTextView = findViewById(R.id.heartRateTextView);
-
-            exerciseTypeTextView.setText(exerciseType);
-            durationTextView.setText(duration + " mins");
-            caloriesBurnedTextView.setText(caloriesBurned + " kcal");
-            distanceTextView.setText(distance + " km");
-            heartRateTextView.setText(averageHeartRate + " bpm");
-
-            if (!"Cardio".equals(exerciseType)) {
-                distanceTextView.setVisibility(View.GONE);
-                heartRateTextView.setVisibility(View.GONE);
-            }
+            displayExerciseSummary();
         }
 
         Button okButton = findViewById(R.id.okButton);
-        okButton.setOnClickListener(v -> {
-            // Get the current date and time
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH) + 1; // Months start from 0
-            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-            int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
-            // Create a timestamp with the current date and time
-            String timestamp = dayOfMonth + "/" + month + "/" + year + " " + hourOfDay + ":" + minute;
+        okButton.setOnClickListener(v -> saveWorkoutHistoryToFirestore());
+    }
 
-            // Create a new Intent to start WorkoutHistoryActivity
-            Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
-            intent.putExtra("EXERCISE_TYPE", exerciseType);
-            intent.putExtra("DURATION", duration);
-            intent.putExtra("CALORIES_BURNED", caloriesBurned);
-            intent.putExtra("DISTANCE", distance);
-            intent.putExtra("AVERAGE_HEART_RATE", averageHeartRate);
-            intent.putExtra("TIMESTAMP", timestamp);
-            startActivity(intent);
-        });
+    private void displayExerciseSummary() {
+        TextView exerciseTypeTextView = findViewById(R.id.exerciseTypeTextView);
+        TextView durationTextView = findViewById(R.id.durationTextView);
+        TextView caloriesBurnedTextView = findViewById(R.id.caloriesBurnedTextView);
+        TextView distanceTextView = findViewById(R.id.distanceTextView);
+        TextView heartRateTextView = findViewById(R.id.heartRateTextView);
+
+        exerciseTypeTextView.setText(exerciseType);
+        durationTextView.setText(String.format(Locale.getDefault(), "%d mins", duration));
+        caloriesBurnedTextView.setText(String.format(Locale.getDefault(), "%d kcal", caloriesBurned));
+        distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distance));
+        heartRateTextView.setText(String.format(Locale.getDefault(), "%d bpm", averageHeartRate));
+
+        if (!"Cardio".equals(exerciseType)) {
+            distanceTextView.setVisibility(View.GONE);
+            heartRateTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void saveWorkoutHistoryToFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Ensure the user is logged in
+
+        // Create a timestamp with the current date and time
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+
+        WorkoutHistoryItem workoutHistoryItem = new WorkoutHistoryItem(
+                exerciseType,
+                duration,
+                caloriesBurned,
+                distance,
+                averageHeartRate,
+                timestamp
+        );
+
+        db.collection("users").document(userId).collection("workoutHistory").add(workoutHistoryItem)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(ExerciseSummaryActivity.this, "Workout saved successfully", Toast.LENGTH_SHORT).show();
+                    navigateToWorkoutHistory();
+                })
+                .addOnFailureListener(e -> Toast.makeText(ExerciseSummaryActivity.this, "Error saving workout", Toast.LENGTH_SHORT).show());
+    }
+
+    private void navigateToWorkoutHistory() {
+        Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
+        startActivity(intent);
+        finish(); // Optionally finish this activity
     }
 }
