@@ -56,7 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Validate and process password reset when button is clicked
+                // Validate and process password reset when buttonSearch is clicked
                 checkValidation();
             }
         });

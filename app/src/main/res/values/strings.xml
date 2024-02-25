@@ -12,6 +12,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="email">Email</string>
     <string name="unit_prompt">Select unit</string>
+    <string name="cardio_exercise_description">Click to start the exercise</string>
 
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -111,4 +112,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="start">Start</string>
+    <string name="nutritional_information_will_be_displayed_here">Nutritional information will be displayed here.</string>
+    <string name="title_activity_summary">SummaryActivity</string>
 </resources>

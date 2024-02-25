@@ -2,6 +2,7 @@ package com.example.nutriapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         bmiButton.setOnClickListener(v -> {
                // Replace the current fragment with the BMIFragment
+            Log.d("MainActivity", "BMI Button clicked");
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new BMIFragment()) // Replace BMIFragment() with your actual fragment class
                     .addToBackStack(null)  // Allows users to go back to the previous fragment/state
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new AccountFragment();
                 } else if (itemId == R.id.fragmentNutrition) {
                     selectedFragment = new NutritionFragment();
-                } else if (itemId == R.id.fragmentCalories) {
-                    selectedFragment = new CaloriesFragment();
+                } else if (itemId == R.id.fragmentRecipe) {
+                    selectedFragment = new RecipeFragment();
                 } else if (itemId == R.id.fragment_workout) {
                     selectedFragment = new WorkoutFragment();
                 }

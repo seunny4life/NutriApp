@@ -4,14 +4,11 @@ public class WeightsExercise extends Exercise {
     private int sets;
     private int reps;
 
-    // Constructor
+    // Constructors
     public WeightsExercise(String name, String duration, int imageResourceId, String description, String benefits) {
         super(name, duration, imageResourceId, description, benefits, "Weights");
-    }
-
-    // Returns formatted sets x reps
-    public String getRepsSets() {
-        return sets + "x" + reps;
+        this.sets = 3; // Default value for sets
+        this.reps = 10; // Default value for reps
     }
 
     // Getter for sets
@@ -32,5 +29,10 @@ public class WeightsExercise extends Exercise {
     // Setter for reps
     public void setReps(int reps) {
         this.reps = reps;
+    }
+
+    // Method to get a formatted string of reps and sets
+    public String getRepsSets() {
+        return sets + " sets of " + reps + " reps";
     }
 }

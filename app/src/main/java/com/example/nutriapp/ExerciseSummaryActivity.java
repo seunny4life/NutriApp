@@ -1,21 +1,22 @@
 package com.example.nutriapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 public class ExerciseSummaryActivity extends AppCompatActivity {
 
-    // Declare class-level variables
+    // Variables to hold exercise data
     private String exerciseType;
     private int duration;
     private int caloriesBurned;
@@ -27,23 +28,28 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_summary);
 
+        // Retrieve exercise data from the intent
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            // Assign values to class-level variables
             exerciseType = extras.getString("EXERCISE_TYPE");
             duration = extras.getInt("DURATION");
             caloriesBurned = extras.getInt("CALORIES_BURNED");
             distance = extras.getDouble("DISTANCE", 0.0);
             averageHeartRate = extras.getInt("AVERAGE_HEART_RATE", 0);
 
-            // Display exercise summary data
+            // Display the retrieved data
             displayExerciseSummary();
         }
 
+        // Setup the OK button to save workout history and navigate
         Button okButton = findViewById(R.id.okButton);
-        okButton.setOnClickListener(v -> saveWorkoutHistoryToFirestore());
+        okButton.setOnClickListener(v -> {
+            saveWorkoutHistory(); // Save current workout data
+            navigateToWorkoutHistory(); // Navigate to the workout history activity
+        });
     }
 
+    // Displays the exercise summary information on the screen
     private void displayExerciseSummary() {
         TextView exerciseTypeTextView = findViewById(R.id.exerciseTypeTextView);
         TextView durationTextView = findViewById(R.id.durationTextView);
@@ -57,39 +63,40 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
         distanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", distance));
         heartRateTextView.setText(String.format(Locale.getDefault(), "%d bpm", averageHeartRate));
 
-        if (!"Cardio".equals(exerciseType)) {
-            distanceTextView.setVisibility(View.GONE);
-            heartRateTextView.setVisibility(View.GONE);
-        }
+        // Additional UI updates based on exercise type can be done here
     }
 
-    private void saveWorkoutHistoryToFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Ensure the user is logged in
+    // Saves the current workout session to SharedPreferences
+    private void saveWorkoutHistory() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
 
-        // Create a timestamp with the current date and time
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        // Retrieve the existing workout history, add the new session, and save it
+        String json = sharedPreferences.getString("workoutHistory", null);
+        Type type = new TypeToken<ArrayList<WorkoutHistoryItem>>() {}.getType();
+        ArrayList<WorkoutHistoryItem> workoutHistoryItems = gson.fromJson(json, type);
 
-        WorkoutHistoryItem workoutHistoryItem = new WorkoutHistoryItem(
-                exerciseType,
-                duration,
-                caloriesBurned,
-                distance,
-                averageHeartRate,
-                timestamp
-        );
+        if (workoutHistoryItems == null) workoutHistoryItems = new ArrayList<>();
 
-        db.collection("users").document(userId).collection("workoutHistory").add(workoutHistoryItem)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(ExerciseSummaryActivity.this, "Workout saved successfully", Toast.LENGTH_SHORT).show();
-                    navigateToWorkoutHistory();
-                })
-                .addOnFailureListener(e -> Toast.makeText(ExerciseSummaryActivity.this, "Error saving workout", Toast.LENGTH_SHORT).show());
+        WorkoutHistoryItem newItem = new WorkoutHistoryItem(exerciseType, duration, caloriesBurned, distance, averageHeartRate, getCurrentTimestamp());
+        workoutHistoryItems.add(newItem);
+
+        // Serialize and save the updated workout history
+        String updatedJson = gson.toJson(workoutHistoryItems);
+        editor.putString("workoutHistory", updatedJson);
+        editor.apply();
     }
 
+    // Generates a timestamp for the current moment
+    private String getCurrentTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+    }
+
+    // Navigates to the WorkoutHistoryActivity
     private void navigateToWorkoutHistory() {
         Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
         startActivity(intent);
-        finish(); // Optionally finish this activity
+        finish(); // Close this activity
     }
 }

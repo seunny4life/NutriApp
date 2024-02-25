@@ -46,9 +46,10 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.navigation:navigation-fragment:2.7.6")
-    implementation("androidx.navigation:navigation-ui:2.7.6")
+    implementation ("com.google.android.material:material:1.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation ("com.github.bumptech.glide:glide:4.13.0")
     implementation("com.google.firebase:firebase-storage:20.3.0") // Correct Firebase Storage dependency

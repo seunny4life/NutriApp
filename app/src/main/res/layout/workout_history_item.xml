@@ -1,60 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/workout_history_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Workout History"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:padding="16dp"/>
+
+    <!-- LinearLayout for workout details -->
     <LinearLayout
+        android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Your TextViews for workout details -->
+
         <TextView
             android:id="@+id/exerciseTypeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Exercise Type: Running"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="Exercise Type: Running" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/durationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Duration: 30 mins" />
+            android:text="Duration: 30 mins"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/caloriesBurnedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Calories Burned: 300 kcal" />
+            android:text="Calories Burned: 300 kcal"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/distanceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Distance: 5.0 km" />
+            android:text="Distance: 5.0 km"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/heartRateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Average Heart Rate: 120 bpm" />
+            android:text="Average Heart Rate: 120 bpm"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/timestampTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Timestamp: 2023-01-01 10:00:00" />
+            android:text="Timestamp: 2023-01-01 10:00:00"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

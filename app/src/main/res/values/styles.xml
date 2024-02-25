@@ -12,6 +12,9 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Define AppTheme for Theme.AppCompat.Light.DarkActionBar -->
@@ -23,8 +26,6 @@
     <style name="CustomNumberPickerStyle">
         <item name="android:textColor">#000000</item>
         <item name="android:background">#FFFFFF</item>
-
-
     </style>
 
 </resources>

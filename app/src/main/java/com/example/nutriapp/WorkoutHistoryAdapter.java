@@ -10,7 +10,7 @@ import java.util.List;
 
 public class WorkoutHistoryAdapter extends RecyclerView.Adapter<WorkoutHistoryAdapter.WorkoutHistoryViewHolder> {
 
-    private List<WorkoutHistoryItem> workoutHistoryItems;
+    private final List<WorkoutHistoryItem> workoutHistoryItems;
 
     public WorkoutHistoryAdapter(List<WorkoutHistoryItem> workoutHistoryItems) {
         this.workoutHistoryItems = workoutHistoryItems;
@@ -36,14 +36,14 @@ public class WorkoutHistoryAdapter extends RecyclerView.Adapter<WorkoutHistoryAd
 
     static class WorkoutHistoryViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView exerciseTypeTextView;
-        private TextView durationTextView;
-        private TextView caloriesBurnedTextView;
-        private TextView distanceTextView;
-        private TextView heartRateTextView;
-        private TextView timestampTextView;
+        private final TextView exerciseTypeTextView;
+        private final TextView durationTextView;
+        private final TextView caloriesBurnedTextView;
+        private final TextView distanceTextView;
+        private final TextView heartRateTextView;
+        private final TextView timestampTextView;
 
-        public WorkoutHistoryViewHolder(View itemView) {
+        WorkoutHistoryViewHolder(View itemView) {
             super(itemView);
             exerciseTypeTextView = itemView.findViewById(R.id.exerciseTypeTextView);
             durationTextView = itemView.findViewById(R.id.durationTextView);
@@ -53,13 +53,13 @@ public class WorkoutHistoryAdapter extends RecyclerView.Adapter<WorkoutHistoryAd
             timestampTextView = itemView.findViewById(R.id.timestampTextView);
         }
 
-        public void bind(WorkoutHistoryItem item) {
-            exerciseTypeTextView.setText(String.format("Exercise Type: %s", item.getExerciseType()));
-            durationTextView.setText(String.format("Duration: %d mins", item.getDuration()));
-            caloriesBurnedTextView.setText(String.format("Calories Burned: %d kcal", item.getCaloriesBurned()));
-            distanceTextView.setText(String.format("Distance: %.2f km", item.getDistance()));
-            heartRateTextView.setText(String.format("Average Heart Rate: %d bpm", item.getAverageHeartRate()));
-            timestampTextView.setText(String.format("Timestamp: %s", item.getTimestamp()));
+        void bind(WorkoutHistoryItem item) {
+            exerciseTypeTextView.setText(item.getExerciseType());
+            durationTextView.setText(String.format("%d mins", item.getDuration()));
+            caloriesBurnedTextView.setText(String.format("%d kcal", item.getCaloriesBurned()));
+            distanceTextView.setText(String.format("%.2f km", item.getDistance()));
+            heartRateTextView.setText(String.format("%d bpm", item.getAverageHeartRate()));
+            timestampTextView.setText(item.getTimestamp());
         }
     }
 }

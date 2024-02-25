@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +25,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     private final OnExerciseClickListener listener;
     private final Context context;
     private int highlightedPosition = -1; // Field to store the highlighted position
+    private long doubleClickLastTime = 0;
 
     public interface OnExerciseClickListener {
         void onExerciseClick(Exercise exercise, int position);
@@ -87,7 +91,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onExerciseClick(exercises.get(position), position);
+                    long clickTime = System.currentTimeMillis();
+                    if (clickTime - doubleClickLastTime < 500) {
+                        // Double click detected
+                        doubleClickLastTime = 0;
+                        showAdjustDialog(exercises.get(position));
+                    } else {
+                        doubleClickLastTime = clickTime;
+                        listener.onExerciseClick(exercises.get(position), position);
+                    }
                 }
             });
         }
@@ -95,7 +107,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         void bind(Exercise exercise) {
             exerciseName.setText(exercise.getName());
             exerciseDuration.setText(exercise.getDuration());
-            // Ensure you have a valid drawable resource or handle it accordingly
             exerciseImage.setImageResource(exercise.getImageResourceId());
             exerciseDescription.setText(exercise.getDescription());
             exerciseBenefits.setText(exercise.getBenefits());
@@ -105,6 +116,35 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             if (exercise instanceof WeightsExercise) {
                 WeightsExercise weightsExercise = (WeightsExercise) exercise;
                 exerciseRepsSets.setText(weightsExercise.getRepsSets());
+            }
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private void showAdjustDialog(Exercise exercise) {
+            if (exercise instanceof WeightsExercise) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Adjust Sets and Reps");
+
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_adjust_reps_sets, null);
+                builder.setView(dialogView);
+
+                NumberPicker setsPicker = dialogView.findViewById(R.id.setsPicker);
+                NumberPicker repsPicker = dialogView.findViewById(R.id.repsPicker);
+
+                setsPicker.setValue(((WeightsExercise) exercise).getSets());
+                repsPicker.setValue(((WeightsExercise) exercise).getReps());
+
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    ((WeightsExercise) exercise).setSets(setsPicker.getValue());
+                    ((WeightsExercise) exercise).setReps(repsPicker.getValue());
+                    notifyDataSetChanged();
+                });
+
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+                builder.create().show();
+            } else {
+                Toast.makeText(context, "Adjustments are only available for weight exercises.", Toast.LENGTH_SHORT).show();
             }
         }
     }
