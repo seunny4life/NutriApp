@@ -85,7 +85,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/noteTextView"
         app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
-
     <Button
         android:id="@+id/viewSummaryButton"
         android:layout_width="0dp"
