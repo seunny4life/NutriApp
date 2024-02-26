@@ -129,6 +129,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="@+id/inputForgotPassword"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/inputForgotPassword"
             app:layout_constraintTop_toBottomOf="@+id/inputForgotPassword" />
 

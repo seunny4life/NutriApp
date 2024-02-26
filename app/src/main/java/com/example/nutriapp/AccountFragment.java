@@ -50,7 +50,12 @@ public class AccountFragment extends Fragment {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
     private SharedPreferences sharedPreferences;
-    private TextView displayEmail, displayLocation, logoutButton, settingsTextView, changePasswordTextView, editPersonalInfoTextView, workoutHistoryTextView;
+    private TextView displayEmail;
+    private TextView displayLocation;
+    private TextView settingsTextView;
+    private TextView changePasswordTextView;
+    private TextView editPersonalInfoTextView;
+    private TextView workoutHistoryTextView;
     private boolean isFragmentAttached = false;
 
     @Nullable
@@ -61,7 +66,7 @@ public class AccountFragment extends Fragment {
         imageViewProfile = view.findViewById(R.id.imageViewProfile);
         displayEmail = view.findViewById(R.id.displayEmail);
         displayLocation = view.findViewById(R.id.displayLocation);
-        logoutButton = view.findViewById(R.id.logoutBack);
+        TextView logoutButton = view.findViewById(R.id.logoutBack);
         editPersonalInfoTextView = view.findViewById(R.id.EditPersonalInfo);
         changePasswordTextView = view.findViewById(R.id.ChangePasswordLiink);
         settingsTextView = view.findViewById(R.id.settings);

@@ -146,7 +146,7 @@ public class BMIFragment extends Fragment {
         double height = Double.parseDouble(mintprogress);
         double weight = Double.parseDouble(weight2);
         BmiResultFragment bmiResultFragment = BmiResultFragment.newInstance((float) height, (float) weight, typerofuser);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, bmiResultFragment)
                 .addToBackStack(null)

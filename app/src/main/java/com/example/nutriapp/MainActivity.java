@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         bmiButton = findViewById(R.id.bmi);
 
         bmiButton.setOnClickListener(v -> {
-               // Replace the current fragment with the BMIFragment
+            // Replace the current fragment with the BMIFragment
             Log.d("MainActivity", "BMI Button clicked");
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new BMIFragment()) // Replace BMIFragment() with your actual fragment class
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
-
 
     private void displayPersonalizedContent() {
         // Implement logic to display personalized content
