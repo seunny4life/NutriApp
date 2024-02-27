@@ -2,22 +2,27 @@ package com.example.nutriapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.text.MessageFormat;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ScrollView scrollView;
     private FrameLayout fragmentContainer;
     private Button bmiButton;
+    private TextView greetingTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         } else {
-            // User is authenticated, display personalized content
-            displayPersonalizedContent();
+            // User is authenticated, set the greeting
+            String username = currentUser.getDisplayName();
+            if (username != null && !username.isEmpty()) {
+                greetingTextView.setText(MessageFormat.format("Hello, {0}!", username));
+            }
         }
     }
 
@@ -44,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView2);
         fragmentContainer = findViewById(R.id.fragment_container);
         bmiButton = findViewById(R.id.bmi);
+        greetingTextView = findViewById(R.id.greeting); // Initialize greeting TextView
 
         bmiButton.setOnClickListener(v -> {
             // Replace the current fragment with the BMIFragment
-            Log.d("MainActivity", "BMI Button clicked");
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new BMIFragment()) // Replace BMIFragment() with your actual fragment class
+                    .replace(R.id.fragment_container, new BMIFragment())
                     .addToBackStack(null)  // Allows users to go back to the previous fragment/state
                     .commit();
         });
@@ -90,13 +98,5 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-    }
-
-    private void displayPersonalizedContent() {
-        // Implement logic to display personalized content
-        // This can include loading user profile data, recent workouts, nutrition tracking, etc.
-        // Update the bottom navigation menu based on the user's authentication status
-        // For example, if the user is logged in, display options for profile settings, workout tracking, etc.
-        // If the user is not logged in, display options for logging in or signing up.
     }
 }

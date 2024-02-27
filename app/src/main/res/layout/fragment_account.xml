@@ -104,23 +104,23 @@
                 app:layout_constraintEnd_toEndOf="@+id/workoutHistory"
                 app:layout_constraintStart_toStartOf="@+id/workoutHistory"
                 tools:ignore="HardcodedText" />
-
             <ImageView
                 android:id="@+id/imageViewProfile"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:background="@color/white"
                 android:clickable="true"
                 android:contentDescription="@string/profile_picture"
                 android:contextClickable="true"
+                android:background="@drawable/circular_background"
                 android:focusable="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/rest_day_icon"
                 app:layout_constraintBottom_toTopOf="@+id/displayEmail"
                 app:layout_constraintEnd_toEndOf="@+id/textViewPersonalInfoHeader"
                 app:layout_constraintStart_toStartOf="@+id/textViewPersonalInfoHeader"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPersonalInfoHeader"
-                tools:ignore="ImageContrastCheck"
-                />
+                tools:ignore="ImageContrastCheck"/>
+
 
 
             <TextView

@@ -3,8 +3,18 @@
     android:id="@+id/activity_workout_history"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#321466"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Workout History"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/workoutHistoryRecyclerView"

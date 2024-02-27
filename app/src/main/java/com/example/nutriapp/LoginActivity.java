@@ -1,8 +1,5 @@
 package com.example.nutriapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -12,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -106,8 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                             navigateToMain();
                         } else {
                             // Login failed, display error message
-                            String errorMessage = "Login Failed: " + (task.getException() != null ? task.getException().getMessage() : "Please check your credentials");
-                            Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "User name or Password is Invalid", Toast.LENGTH_LONG).show();
+
+                            navigateToLogin();
                         }
                     }
                 });
@@ -123,6 +124,14 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToMain() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    // Navigate back to the login
+    private void navigateToLogin() {
+        Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

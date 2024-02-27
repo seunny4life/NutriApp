@@ -7,10 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cardio"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
         android:id="@+id/recycler_view_exercises"
         android:layout_width="match_parent"
         android:layout_height="0dp"

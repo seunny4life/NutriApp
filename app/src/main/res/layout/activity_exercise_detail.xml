@@ -14,9 +14,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -29,8 +28,8 @@
         android:id="@+id/exerciseImageView"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginTop="24dp"
         android:contentDescription="@string/exercise_image"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="@+id/exerciseNameTextView"
         app:layout_constraintStart_toStartOf="@+id/exerciseNameTextView"
         app:layout_constraintTop_toBottomOf="@+id/exerciseNameTextView"
@@ -41,64 +40,58 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:indeterminate="false"
-        android:max="100"
         android:padding="10dp"
+
         android:progress="50"
         app:layout_constraintBottom_toTopOf="@+id/exerciseDurationTextView"
         app:layout_constraintEnd_toEndOf="@+id/exerciseImageView"
         app:layout_constraintStart_toStartOf="@+id/exerciseImageView"
-        app:layout_constraintTop_toBottomOf="@id/exerciseImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/exerciseImageView" />
 
     <TextView
         android:id="@+id/exerciseDurationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/durationNumberPicker"
-        app:layout_constraintEnd_toEndOf="@+id/exerciseImageView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/exerciseImageView"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseImageView"
+        app:layout_constraintBottom_toTopOf="@+id/setsAndRepsTextView"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="Duration: 30 mins" />
 
     <NumberPicker
         android:id="@+id/durationNumberPicker"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:theme="@style/CustomNumberPickerStyle"
         app:layout_constraintBottom_toTopOf="@+id/startPauseButton"
-        app:layout_constraintEnd_toEndOf="@+id/exerciseDurationTextView"
-        app:layout_constraintStart_toStartOf="@+id/exerciseDurationTextView"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseDurationTextView" />
+        app:layout_constraintEnd_toEndOf="@+id/setsAndRepsTextView"
+        app:layout_constraintStart_toStartOf="@+id/setsAndRepsTextView"
+        app:layout_constraintTop_toBottomOf="@+id/setsAndRepsTextView" />
 
     <Button
         android:id="@+id/startPauseButton"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:background="@drawable/btn_bg_white"
         android:text="Start"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/exerciseDescriptionTextView"
         app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
         app:layout_constraintStart_toStartOf="@+id/durationNumberPicker"
         app:layout_constraintTop_toBottomOf="@+id/durationNumberPicker" />
 
     <TextView
         android:id="@+id/exerciseDescriptionTextView"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/exerciseBenefitsTextView"
         app:layout_constraintEnd_toEndOf="@+id/startPauseButton"
         app:layout_constraintStart_toStartOf="@+id/startPauseButton"
         app:layout_constraintTop_toBottomOf="@+id/startPauseButton"
@@ -106,12 +99,12 @@
 
     <TextView
         android:id="@+id/exerciseBenefitsTextView"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/sessionStatusTextView"
         app:layout_constraintEnd_toEndOf="@+id/exerciseDescriptionTextView"
         app:layout_constraintStart_toStartOf="@+id/exerciseDescriptionTextView"
         app:layout_constraintTop_toBottomOf="@+id/exerciseDescriptionTextView"
@@ -121,50 +114,38 @@
         android:id="@+id/setsAndRepsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/exerciseImageView"
-        app:layout_constraintStart_toStartOf="@+id/exerciseImageView"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        app:layout_constraintBottom_toTopOf="@+id/durationNumberPicker"
+        app:layout_constraintEnd_toEndOf="@+id/exerciseDurationTextView"
+        app:layout_constraintStart_toStartOf="@+id/exerciseDurationTextView"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseDurationTextView" />
 
     <TextView
         android:id="@+id/sessionStatusTextView"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/skipBreakButton"
         app:layout_constraintEnd_toEndOf="@+id/exerciseBenefitsTextView"
         app:layout_constraintStart_toStartOf="@+id/exerciseBenefitsTextView"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseBenefitsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/exerciseBenefitsTextView"
+        tools:text="Start" />
 
     <Button
         android:id="@+id/skipBreakButton"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:background="@drawable/btn_bg_white"
-        android:text="Skip Break"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/sessionStatusTextView"
-        app:layout_constraintStart_toStartOf="@+id/sessionStatusTextView"
-        app:layout_constraintTop_toBottomOf="@+id/sessionStatusTextView" />
-
-    <Button
-        android:id="@+id/skipExerciseButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/btn_bg_white"
-        android:text="Skip Exercise"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/sessionStatusTextView"
         app:layout_constraintStart_toStartOf="@+id/sessionStatusTextView"
-        app:layout_constraintTop_toBottomOf="@+id/skipBreakButton" />
+        app:layout_constraintTop_toBottomOf="@+id/sessionStatusTextView"
+        tools:text="Skip Break" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class NutritionFragment extends Fragment {
     private TextView foodInfoTextView;
     private FoodItem lastSearchedFoodItem = null;
-    private ArrayList<FoodItem> addedFoodList = new ArrayList<>();
+    private final ArrayList<FoodItem> addedFoodList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

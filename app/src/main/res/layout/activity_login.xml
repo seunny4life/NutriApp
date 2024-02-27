@@ -18,8 +18,8 @@
             android:id="@+id/textViewLoginLogo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:text="Sign In"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -72,7 +72,7 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="0dp"
+            android:layout_width="363dp"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/inputForgotPassword"
@@ -84,27 +84,28 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/buttonSignIn"
-            app:layout_constraintStart_toStartOf="@+id/buttonSignIn">
+            app:layout_constraintStart_toStartOf="@+id/buttonSignIn"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSignIn">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/don_t_have_an_account"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textViewSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:textSize="18sp"
                 android:text="@string/sign_up"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                />
 
         </LinearLayout>
 
@@ -114,7 +115,7 @@
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
             app:layout_constraintEnd_toEndOf="@+id/progressBar"
             app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -126,10 +127,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg_white"
             android:text="@string/sign_in"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="@+id/inputForgotPassword"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/inputForgotPassword"
             app:layout_constraintTop_toBottomOf="@+id/inputForgotPassword" />
 

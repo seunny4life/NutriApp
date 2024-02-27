@@ -1,10 +1,8 @@
 package com.example.nutriapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,14 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class ExerciseDetailActivity extends AppCompatActivity {
-    private TextView nameTextView, durationTextView, sessionStatusTextView, descriptionTextView, benefitsTextView;
+    private TextView nameTextView, durationTextView, sessionStatusTextView, descriptionTextView, benefitsTextView, setsAndRepsTextView;
     private ImageView imageView;
     private NumberPicker durationNumberPicker;
-    private Button startPauseButton, skipBreakButton, skipExerciseButton;
+    private Button startPauseButton, skipBreakButton;
     private ProgressBar progressBar;
     private boolean isExerciseRunning = false;
     private CountDownTimer countDownTimer;
     private long remainingTimeMillis;
+    private boolean isFirstStart = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             }
         });
 
-        skipExerciseButton.setOnClickListener(v -> finishExerciseEarly());
-        skipBreakButton.setOnClickListener(v -> skipBreak());
+        skipBreakButton.setOnClickListener(v -> finishExerciseEarly());
     }
 
     private void initializeViews() {
@@ -57,13 +56,14 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         imageView = findViewById(R.id.exerciseImageView);
         durationTextView = findViewById(R.id.exerciseDurationTextView);
         durationNumberPicker = findViewById(R.id.durationNumberPicker);
+        setsAndRepsTextView = findViewById(R.id.setsAndRepsTextView);
         startPauseButton = findViewById(R.id.startPauseButton);
         skipBreakButton = findViewById(R.id.skipBreakButton);
         sessionStatusTextView = findViewById(R.id.sessionStatusTextView);
         descriptionTextView = findViewById(R.id.exerciseDescriptionTextView);
         benefitsTextView = findViewById(R.id.exerciseBenefitsTextView);
-        skipExerciseButton = findViewById(R.id.skipExerciseButton);
         progressBar = findViewById(R.id.progressBar);
+
 
         durationNumberPicker.setMinValue(1);
         durationNumberPicker.setMaxValue(120);
@@ -77,14 +77,21 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             String name = intent.getStringExtra("EXERCISE_NAME");
             int imageResId = intent.getIntExtra("EXERCISE_IMAGE", 0);
             String type = intent.getStringExtra("EXERCISE_TYPE");
+            String description = intent.getStringExtra("EXERCISE_DESCRIPTION");
+            String benefits = intent.getStringExtra("EXERCISE_BENEFITS");
+            int sets = intent.getIntExtra("EXERCISE_SETS", 3); // Default to 3 sets
+            int reps = intent.getIntExtra("EXERCISE_REPS", 10); // Default to 10 reps
 
             nameTextView.setText(name);
             imageView.setImageResource(imageResId);
+            descriptionTextView.setText(description);
+            benefitsTextView.setText(benefits);
 
-            if ("Cardio".equals(type)) {
-                prepareCardioExercise();
+            if ("Weights".equals(type)) {
+                // Display sets and reps
+                setsAndRepsTextView.setText(sets + " sets of " + reps + " reps");
             } else {
-                prepareWeightExercise(intent);
+                prepareCardioExercise();
             }
         }
     }
@@ -96,8 +103,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         sessionStatusTextView.setVisibility(View.VISIBLE);
         descriptionTextView.setVisibility(View.GONE);
         benefitsTextView.setVisibility(View.GONE);
-        skipBreakButton.setVisibility(View.GONE);
-        skipExerciseButton.setVisibility(View.GONE);
+        skipBreakButton.setVisibility(View.GONE); // Hide the skipBreakButton for cardio exercises.
     }
 
     private void prepareWeightExercise(Intent intent) {
@@ -112,20 +118,22 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         benefitsTextView.setVisibility(View.VISIBLE);
         descriptionTextView.setText(description);
         benefitsTextView.setText(benefits);
-        skipBreakButton.setVisibility(View.VISIBLE);
-        skipExerciseButton.setVisibility(View.VISIBLE);
     }
 
     private void startCountdownTimer(long millisInFuture) {
-        sessionStatusTextView.setText("Exercise Running");
+        sessionStatusTextView.setText("Exercise Running"); // Update status to indicate exercise has started
         sessionStatusTextView.setTextColor(ContextCompat.getColor(this, R.color.red));
-        progressBar.setMax((int) millisInFuture);
+
+        if (isFirstStart) {
+            progressBar.setMax((int) millisInFuture);
+            isFirstStart = false;
+        }
 
         countDownTimer = new CountDownTimer(millisInFuture, 1000) {
             public void onTick(long millisUntilFinished) {
                 remainingTimeMillis = millisUntilFinished;
                 updateDurationTextView(millisUntilFinished);
-                progressBar.setProgress((int) (millisInFuture - millisUntilFinished));
+                progressBar.setProgress((int) (progressBar.getMax() - millisUntilFinished));
             }
 
             public void onFinish() {
@@ -139,9 +147,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     private void pauseCountdownTimer() {
         countDownTimer.cancel();
         isExerciseRunning = false;
-        startPauseButton.setText("Start");
+        startPauseButton.setText("Resume");
         sessionStatusTextView.setText("Exercise Paused");
-        sessionStatusTextView.setTextColor(ContextCompat.getColor(this, R.color.colorGray));
+        sessionStatusTextView.setTextColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void updateDurationTextView(long millisUntilFinished) {
@@ -166,10 +174,6 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         navigateToSummary();
     }
 
-    private void skipBreak() {
-        // Implementation for skipping a break
-    }
-
     private void navigateToSummary() {
         Intent intent = getIntent();
         String type = intent.getStringExtra("EXERCISE_TYPE");
@@ -187,15 +191,15 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     }
 
     private int calculateCaloriesBurned(int duration) {
-        return duration * 10; // Example calculation
+        return duration * 10;
     }
 
     private double calculateDistance(int duration) {
-        return duration * 0.05; // Example calculation
+        return duration * 0.05;
     }
 
     private int calculateAverageHeartRate(int duration) {
-        return 150; // Example calculation
+        return 150;
     }
 
     @Override

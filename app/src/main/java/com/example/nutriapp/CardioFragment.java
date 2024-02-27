@@ -34,8 +34,8 @@ public class CardioFragment extends Fragment implements ExerciseAdapter.OnExerci
 
     private List<Exercise> generateCardioExercises() {
         List<Exercise> exercises = new ArrayList<>();
-        exercises.add(new CardioExercise("Running", "30", R.drawable.run, "Improves cardiovascular health.", "Great for endurance and stamina."));
-        exercises.add(new CardioExercise("Cycling", "45", R.drawable.cycling, "Low impact but effective for weight loss.", "Strengthens lower body muscles."));
+        exercises.add(new CardioExercise("Running", "30", R.drawable.run, "Running improves cardiovascular health by increasing heart rate.", "Great for endurance and stamina."));
+        exercises.add(new CardioExercise("Cycling", "45", R.drawable.cycling, " Cycling is a low-impact exercise that involves pedaling.", " Effective for weight loss, strengthens lower body muscles."));
         exercises.add(new CardioExercise("Jumping Jacks", "40", R.drawable.hanging_exercise_b, "A full-body workout that reduces body fat.", "Helps to improve heart health."));
         exercises.add(new CardioExercise("High Knees", "40", R.drawable.img_calorie_burn, "Enhances coordination and flexibility of leg muscles.", "Aids in burning calories, boosting metabolism."));
         exercises.add(new CardioExercise("Burpees", "60", R.drawable.ic_walk_black_24dp, "Increases strength and muscle tone.", "Improves cardiovascular fitness and endurance."));

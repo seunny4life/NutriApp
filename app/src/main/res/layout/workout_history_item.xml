@@ -8,17 +8,6 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-    <!-- Title TextView -->
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Workout History"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:padding="16dp"/>
-
     <!-- LinearLayout for workout details -->
     <LinearLayout
         android:id="@+id/info"

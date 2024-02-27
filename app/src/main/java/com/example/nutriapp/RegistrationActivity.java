@@ -19,6 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -33,9 +37,11 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        // Initialize UI components and setup event listeners
         initializeUIComponents();
     }
 
+    // Method to initialize UI components and setup event listeners
     private void initializeUIComponents() {
         inputUserName = findViewById(R.id.editTextUserName);
         inputEmail = findViewById(R.id.editTextEmail);
@@ -46,33 +52,40 @@ public class RegistrationActivity extends AppCompatActivity {
         regFireBaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
 
+        // Register button click listener
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Call method to register user
                 registerUser();
             }
         });
 
+        // Already registered text view click listener
         inputSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Redirect to login activity
                 startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
             }
         });
     }
 
+    // Method to register a new user
     private void registerUser() {
         String username = inputUserName.getText().toString().trim();
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
         String confirm = inputConfirm.getText().toString().trim();
 
+        // Validate username
         if (TextUtils.isEmpty(username)) {
             inputUserName.setError("Username can't be empty");
             inputUserName.requestFocus();
             return;
         }
 
+        // Validate email
         if (TextUtils.isEmpty(email)) {
             inputEmail.setError("Email is required");
             inputEmail.requestFocus();
@@ -85,24 +98,29 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
+        // Validate password
         if (TextUtils.isEmpty(password)) {
             inputPassword.setError("Password is required");
             inputPassword.requestFocus();
             return;
         }
 
-        if (password.length() < 6) {
-            inputPassword.setError("Password should be at least 6 characters long");
+        // Check password strength
+        if (password.length() < 8 || !password.matches(".*[A-Z].*") || !password.matches(".*[a-z].*")
+                || !password.matches(".*\\d.*") || !password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            inputPassword.setError("Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character");
             inputPassword.requestFocus();
             return;
         }
 
+        // Confirm password
         if (!password.equals(confirm)) {
             inputConfirm.setError("Passwords do not match");
             inputConfirm.requestFocus();
             return;
         }
 
+        // Show progress dialog
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
@@ -125,10 +143,34 @@ public class RegistrationActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 progressDialog.dismiss();
                                                 if (task.isSuccessful()) {
+                                                    // Registration successful, store username in Firebase Database
+                                                    String userId = regFireBaseAuth.getCurrentUser().getUid();
+                                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                                                    userRef.child("username").setValue(username);
+                                                    userRef.child("email").setValue(email);
+
+                                                    // Set the display name
+                                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                    if (user != null) {
+                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                .setDisplayName(username)
+                                                                .build();
+
+                                                        user.updateProfile(profileUpdates)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+
                                                     Toast.makeText(RegistrationActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
                                                     startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                                                     finish();
                                                 } else {
+                                                    // Registration failed
                                                     Toast.makeText(RegistrationActivity.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                                 }
                                             }
@@ -136,6 +178,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             }
                         } else {
                             progressDialog.dismiss();
+                            // Error occurred while checking email existence
                             Toast.makeText(RegistrationActivity.this, "Failed to check email existence: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -106,6 +106,7 @@ public class AccountFragment extends Fragment {
     private void loadUserProfile() {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
+            displayEmail.setText(currentUser.getEmail());
             String savedImageUrl = sharedPreferences.getString("profileImageUrl", null);
             if (savedImageUrl != null && isFragmentAttached) {
                 Glide.with(this).load(savedImageUrl).placeholder(R.drawable.person).into(imageViewProfile);
@@ -127,6 +128,11 @@ public class AccountFragment extends Fragment {
                         }
                     }
                 });
+            }
+            // Update display location if it's available
+            String updatedLocation = getActivity().getIntent().getStringExtra("updatedLocation");
+            if (updatedLocation != null && !updatedLocation.isEmpty()) {
+                displayLocation.setText(updatedLocation);
             }
         }
     }
@@ -274,7 +280,6 @@ public class AccountFragment extends Fragment {
     }
 
     public void workoutHistory(View view) {
-        startActivity(new Intent(getContext(),WorkoutHistoryActivity.class));
+        startActivity(new Intent(getContext(), WorkoutHistoryActivity.class));
     }
-
 }
