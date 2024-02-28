@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             // User is authenticated, set the greeting
             String username = currentUser.getDisplayName();
             if (username != null && !username.isEmpty()) {
-                greetingTextView.setText(MessageFormat.format("Hello, {0}!", username));
+                greetingTextView.setText(MessageFormat.format("Welcome, {0}!", username));
             }
         }
     }

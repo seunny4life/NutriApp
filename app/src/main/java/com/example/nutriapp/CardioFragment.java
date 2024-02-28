@@ -44,7 +44,7 @@ public class CardioFragment extends Fragment implements ExerciseAdapter.OnExerci
 
     @Override
     public void onExerciseClick(Exercise exercise, int position) {
-        Intent intent = new Intent(getContext(), ExerciseDetailActivity.class);
+        Intent intent = new Intent(getContext(), CardioDetailActivity.class);
         intent.putExtra("EXERCISE_NAME", exercise.getName());
         intent.putExtra("EXERCISE_DURATION", exercise.getDuration());
         intent.putExtra("EXERCISE_IMAGE", exercise.getImageResourceId());

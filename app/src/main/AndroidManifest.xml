@@ -19,7 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.NutriApp"
         tools:targetApi="s">
-
+        <activity
+            android:name=".CardioDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WeightDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".SettingActivity"
             android:exported="false"
@@ -30,9 +35,6 @@
             android:exported="false" />
         <activity
             android:name=".ExerciseSummaryActivity"
-            android:exported="false" /> <!-- Activities -->
-        <activity
-            android:name=".ExerciseDetailActivity"
             android:exported="false" />
         <activity
             android:name=".PasswordChangedActivity"
@@ -48,9 +50,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true"/>
-
-
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -60,7 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

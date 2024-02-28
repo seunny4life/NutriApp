@@ -1,15 +1,11 @@
 package com.example.nutriapp;
 
-import android.content.Context;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +20,7 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
 
     private RecyclerView recyclerView;
     private ExerciseAdapter adapter;
-    private Exercise selectedExercise; // To store the selected exercise
+    private List<Exercise> weightExercises;
 
     @Nullable
     @Override
@@ -34,7 +30,7 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
         recyclerView = rootView.findViewById(R.id.recycler_view_exercises);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        List<Exercise> weightExercises = generateWeightExercises();
+        weightExercises = generateWeightExercises();
         adapter = new ExerciseAdapter(getContext(), weightExercises, this);
         recyclerView.setAdapter(adapter);
 
@@ -46,57 +42,24 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
 
     private List<Exercise> generateWeightExercises() {
         List<Exercise> exercises = new ArrayList<>();
-        exercises.add(new WeightsExercise("Squats", "3, 12", R.drawable.super_cobra_stretch, "Builds lower body and core strength.", "Improves flexibility and balance."));
-        exercises.add(new WeightsExercise("Deadlifts", "3, 10",R.drawable.two_straight_legs_up, "Targets the back, buttocks, and leg muscles.", "Helps correct posture and increases muscle mass."));
-        exercises.add(new WeightsExercise("Bench Press", "3, 8", R.drawable.pilates_rool_over_a, "Strengthens the chest, shoulders, and triceps.", "Improves upper body strength."));
+
+        // Create and add weight exercises to the list
+        exercises.add(new WeightsExercise("Squats", "3, 1", R.drawable.two_straight_legs_up, "Description for squats", "Benefits for squats"));
+        exercises.add(new WeightsExercise("Deadlifts", "3, 1", R.drawable.super_cobra_stretch, "Description for deadlifts", "Benefits for deadlifts"));
+        exercises.add(new WeightsExercise("Bench Press", "3, 1", R.drawable.pilates_rool_over_a, "Description for bench press", "Benefits for bench press"));
+
         return exercises;
     }
 
     @Override
     public void onExerciseClick(Exercise exercise, int position) {
-        selectedExercise = exercise;
-        if (exercise instanceof WeightsExercise) {
-            showAdjustRepsSetsDialog((WeightsExercise) exercise, position);
-        }
+        // Handle exercise click if needed
     }
 
     private void startWeightSession() {
-        if (selectedExercise != null) {
-            Intent intent = new Intent(getActivity(), ExerciseDetailActivity.class);
-            intent.putExtra("EXERCISE_NAME", selectedExercise.getName());
-            intent.putExtra("EXERCISE_IMAGE", selectedExercise.getImageResourceId());
-            intent.putExtra("EXERCISE_TYPE", selectedExercise.getType());
-            intent.putExtra("EXERCISE_DESCRIPTION", selectedExercise.getDescription());
-            intent.putExtra("EXERCISE_BENEFITS", selectedExercise.getBenefits());
-            startActivity(intent);
-        } else {
-            Toast.makeText(getContext(), "Please select an exercise first.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void showAdjustRepsSetsDialog(WeightsExercise exercise, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_adjust_reps_sets, null);
-
-        final NumberPicker setsPicker = dialogView.findViewById(R.id.setsPicker);
-        setsPicker.setMaxValue(20);
-        setsPicker.setMinValue(1);
-        setsPicker.setValue(exercise.getSets());
-
-        final NumberPicker repsPicker = dialogView.findViewById(R.id.repsPicker);
-        repsPicker.setMaxValue(50);
-        repsPicker.setMinValue(1);
-        repsPicker.setValue(exercise.getReps());
-
-        builder.setView(dialogView)
-                .setTitle("Adjust Sets and Reps")
-                .setPositiveButton("OK", (dialog, which) -> {
-                    exercise.setSets(setsPicker.getValue());
-                    exercise.setReps(repsPicker.getValue());
-                    adapter.notifyItemChanged(position); // Refresh the list
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
-                .show();
+        Intent intent = new Intent(getActivity(), WeightDetailActivity.class);
+        intent.putExtra("EXERCISE_TYPE", "Weights");
+        intent.putExtra("EXERCISES", new ArrayList<>(weightExercises));
+        startActivity(intent);
     }
 }

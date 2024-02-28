@@ -1,6 +1,7 @@
 
 package com.example.nutriapp;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -60,6 +61,7 @@ public class BmiResultFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void calculateAndDisplayBMI(View rootView, float height, float weight, String gender) {
         float heightInMeters = height / 100;
         float bmi = weight / (heightInMeters * heightInMeters);

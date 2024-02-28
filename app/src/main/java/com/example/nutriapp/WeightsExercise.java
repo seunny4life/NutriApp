@@ -1,6 +1,8 @@
 package com.example.nutriapp;
 
-public class WeightsExercise extends Exercise {
+import java.io.Serializable;
+
+public class WeightsExercise extends Exercise implements Serializable {
     private int sets;
     private int reps;
 

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_cardio_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3C97C1"
+    android:hardwareAccelerated="false"
+    tools:context=".CardioDetailActivity">
+
+    <TextView
+        android:id="@+id/cardioExerciseNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardioExerciseImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Exercise Name" />
+
+    <ImageView
+        android:id="@+id/cardioExerciseImageView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/exercise_image"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/cardioExerciseNameTextView"
+        app:layout_constraintStart_toStartOf="@+id/cardioExerciseNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cardioExerciseNameTextView"
+        app:srcCompat="@drawable/ic_exercise_placeholder" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:indeterminate="false"
+        android:padding="10dp"
+        android:progressBackgroundTint="@color/progress_background"
+        android:progressTint="@color/progress_color"
+        app:layout_constraintBottom_toTopOf="@+id/cardioExerciseDurationTextView"
+        app:layout_constraintEnd_toEndOf="@+id/cardioExerciseImageView"
+        app:layout_constraintStart_toStartOf="@+id/cardioExerciseImageView"
+        app:layout_constraintTop_toBottomOf="@+id/cardioExerciseImageView" />
+
+    <TextView
+        android:id="@+id/cardioExerciseDurationTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/durationNumberPicker"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        tools:text="Duration: 00:00" />
+
+    <NumberPicker
+        android:id="@+id/durationNumberPicker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/CustomNumberPickerStyle"
+        app:layout_constraintBottom_toTopOf="@+id/sessionStatusTextView"
+        app:layout_constraintEnd_toEndOf="@+id/cardioExerciseDurationTextView"
+        app:layout_constraintStart_toStartOf="@+id/cardioExerciseDurationTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cardioExerciseDurationTextView" />
+
+    <Button
+        android:id="@+id/startPauseButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/a1_grad"
+        android:text="Start"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/sessionStatusTextView"
+        app:layout_constraintStart_toStartOf="@+id/sessionStatusTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sessionStatusTextView" />
+
+    <TextView
+        android:id="@+id/sessionStatusTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/startPauseButton"
+        app:layout_constraintEnd_toEndOf="@+id/durationNumberPicker"
+        app:layout_constraintStart_toStartOf="@+id/durationNumberPicker"
+        app:layout_constraintTop_toBottomOf="@+id/durationNumberPicker"
+        tools:text="Start" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

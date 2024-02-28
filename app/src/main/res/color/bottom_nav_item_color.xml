@@ -3,5 +3,5 @@
     <!-- res/color/bottom_nav_item_color.xml -->
         <item android:color="@color/active_color" android:state_checked="true"/>
         <item android:color="@color/white" />
-        <item android:color="@color/inactive_color"/>
+        <item android:color="#FFFCFC"/>
 </selector>

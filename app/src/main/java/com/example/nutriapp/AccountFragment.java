@@ -1,10 +1,10 @@
 package com.example.nutriapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,15 +15,16 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,16 +36,19 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 public class AccountFragment extends Fragment {
 
+    private static final int PICK_IMAGE_REQUEST = 22;
+    private static final int PERMISSION_REQUEST_CODE = 100;
+    private static final int UPDATE_LOCATION_REQUEST = 101;
+
     private ImageView imageViewProfile;
     private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 22;
-    private final int PERMISSION_REQUEST_CODE = 100;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -130,7 +134,7 @@ public class AccountFragment extends Fragment {
                 });
             }
             // Update display location if it's available
-            String updatedLocation = getActivity().getIntent().getStringExtra("updatedLocation");
+            String updatedLocation = requireActivity().getIntent().getStringExtra("updatedLocation");
             if (updatedLocation != null && !updatedLocation.isEmpty()) {
                 displayLocation.setText(updatedLocation);
             }
@@ -180,6 +184,11 @@ public class AccountFragment extends Fragment {
                 uploadImage(optimizedBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        } else if (requestCode == UPDATE_LOCATION_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            String updatedLocation = data.getStringExtra("updatedLocation");
+            if (updatedLocation != null && !updatedLocation.isEmpty()) {
+                displayLocation.setText(updatedLocation);
             }
         }
     }

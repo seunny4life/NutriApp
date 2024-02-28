@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/white"
@@ -36,7 +36,6 @@
             android:id="@+id/inputEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:background="@drawable/input_bg"
             android:drawableStart="@drawable/email"
             android:drawablePadding="10dp"
@@ -49,13 +48,14 @@
             app:layout_constraintBottom_toTopOf="@+id/inputPassword"
             app:layout_constraintEnd_toEndOf="@+id/textViewLoginLogo"
             app:layout_constraintStart_toStartOf="@+id/textViewLoginLogo"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLoginLogo" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewLoginLogo"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/inputPassword"
             android:layout_width="0dp"
+            android:importantForAutofill="no"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:background="@drawable/input_bg"
             android:drawableStart="@drawable/security"
             android:drawablePadding="10dp"
@@ -68,7 +68,8 @@
             app:layout_constraintBottom_toTopOf="@+id/progressBar"
             app:layout_constraintEnd_toEndOf="@+id/inputEmail"
             app:layout_constraintStart_toStartOf="@+id/inputEmail"
-            app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/inputEmail"
+             />
 
         <ProgressBar
             android:id="@+id/progressBar"
