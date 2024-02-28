@@ -17,6 +17,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nutriapp.Exercise;
+import com.example.nutriapp.WeightsExercise;
+import com.example.nutriapp.R;
+
 import java.util.List;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
@@ -24,7 +28,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     private final List<Exercise> exercises;
     private final OnExerciseClickListener listener;
     private final Context context;
-    private int highlightedPosition = -1; // Field to store the highlighted position
+    private int highlightedPosition = -1; // Field to store the highlighted positionWeigt
     private long doubleClickLastTime = 0;
 
     public interface OnExerciseClickListener {
@@ -142,8 +146,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                 repsPicker.setValue(((WeightsExercise) exercise).getReps()); // Initial value for reps
 
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    ((WeightsExercise) exercise).setSets(setsPicker.getValue());
-                    ((WeightsExercise) exercise).setReps(repsPicker.getValue());
+                    int sets = setsPicker.getValue();
+                    int reps = repsPicker.getValue();
+
+                    ((WeightsExercise) exercise).setSets(sets);
+                    ((WeightsExercise) exercise).setReps(reps);
+
+                    // Update the duration based on sets and reps
+                    int seconds = sets * reps * 4; // Assuming 4 seconds per repetition
+                    String duration = seconds + " seconds";
+                    exercise.setDuration(duration);
+
                     notifyDataSetChanged();
                 });
 

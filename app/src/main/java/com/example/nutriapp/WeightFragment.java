@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nutriapp.ExerciseAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,38 +27,55 @@ public class WeightFragment extends Fragment implements ExerciseAdapter.OnExerci
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_weight, container, false);
 
+        // Find RecyclerView in the layout
         recyclerView = rootView.findViewById(R.id.recycler_view_exercises);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
+        // Generate the list of weight exercises
         weightExercises = generateWeightExercises();
+
+        // Create and set up the adapter
         adapter = new ExerciseAdapter(getContext(), weightExercises, this);
         recyclerView.setAdapter(adapter);
 
+        // Find and set click listener for the start session button
         Button startButton = rootView.findViewById(R.id.startWeightSessionButton);
         startButton.setOnClickListener(v -> startWeightSession());
 
         return rootView;
     }
 
+    // Method to generate a list of weight exercises
     private List<Exercise> generateWeightExercises() {
         List<Exercise> exercises = new ArrayList<>();
 
-        // Create and add weight exercises to the list
-        exercises.add(new WeightsExercise("Squats", "3, 1", R.drawable.two_straight_legs_up, "Description for squats", "Benefits for squats"));
-        exercises.add(new WeightsExercise("Deadlifts", "3, 1", R.drawable.super_cobra_stretch, "Description for deadlifts", "Benefits for deadlifts"));
-        exercises.add(new WeightsExercise("Bench Press", "3, 1", R.drawable.pilates_rool_over_a, "Description for bench press", "Benefits for bench press"));
+        // Add weight exercises to the list
+        exercises.add(new WeightsExercise("Seated Toe Touch", "1 sets of 10 reps", R.drawable.seated_toe_touch_a, "Description for seated toe touch", "Benefits for seated toe touch"));
+        exercises.add(new WeightsExercise("Wall Stretch", "1 sets of 10 reps", R.drawable.wall_stretch_a, "Description for wall stretch", "Benefits for wall stretch"));
+        exercises.add(new WeightsExercise("Standing Vertical Stretch", "1 sets of 10 reps", R.drawable.standing_vertical_stretch_a, "Description for standing vertical stretch", "Benefits for standing vertical stretch"));
+        exercises.add(new WeightsExercise("Pelvic Shift", "1 sets of 10 reps", R.drawable.pelvic_shift_a, "Description for pelvic shift", "Benefits for pelvic shift"));
+        exercises.add(new WeightsExercise("Pilates Rollover", "1 sets of 10 reps", R.drawable.pilates_rool_over_a, "Description for pilates rollover", "Benefits for pilates rollover"));
+        exercises.add(new WeightsExercise("Dry Land Swim", "1 sets of 10 reps", R.drawable.drt_land_swim_a, "Description for dry land swim", "Benefits for dry land swim"));
+        exercises.add(new WeightsExercise("Cat-Cow Stretch", "1 sets of 10 reps", R.drawable.cat_cow_stretch_a, "Description for cat-cow stretch", "Benefits for cat-cow stretch"));
+        exercises.add(new WeightsExercise("Quad Stretch", "1 sets of 10 reps", R.drawable.run_b, "Description for quad stretch", "Benefits for quad stretch"));
+        exercises.add(new WeightsExercise("Hamstring Stretch with Strap", "1 sets of 10 reps", R.drawable.hanging_exercise_b, "Description for hamstring stretch with strap", "Benefits for hamstring stretch with strap"));
+        exercises.add(new WeightsExercise("Trunk Rotation Stretch", "1 sets of 10 reps", R.drawable.forward_spine_stretch_a, "Description for trunk rotation stretch", "Benefits for trunk rotation stretch"));
 
         return exercises;
     }
 
+    // Listener for exercise item click (not used currently)
     @Override
     public void onExerciseClick(Exercise exercise, int position) {
         // Handle exercise click if needed
     }
 
+    // Method to start the weight session
     private void startWeightSession() {
+        // Start the WeightDetailActivity with the list of weight exercises
         Intent intent = new Intent(getActivity(), WeightDetailActivity.class);
         intent.putExtra("EXERCISE_TYPE", "Weights");
         intent.putExtra("EXERCISES", new ArrayList<>(weightExercises));

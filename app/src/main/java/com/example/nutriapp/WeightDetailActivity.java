@@ -1,18 +1,16 @@
 package com.example.nutriapp;
 
-import static java.lang.String.format;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -27,6 +25,9 @@ public class WeightDetailActivity extends AppCompatActivity {
     private boolean isFirstStart = true;
     private List<Exercise> exercises;
     private int currentExerciseIndex = 0;
+    private int totalSets;
+    private int currentSet = 1;
+    private int repsPerSet = 10;
     private long remainingTimeMillis = 0;
 
     @Override
@@ -64,6 +65,8 @@ public class WeightDetailActivity extends AppCompatActivity {
     private void startNextExercise() {
         if (currentExerciseIndex < exercises.size()) {
             Exercise exercise = exercises.get(currentExerciseIndex);
+            totalSets = ((WeightsExercise) exercise).getSets(); // Get adjusted sets
+            repsPerSet = ((WeightsExercise) exercise).getReps(); // Get adjusted reps
             displayExercise(exercise);
             currentExerciseIndex++;
         } else {
@@ -75,11 +78,14 @@ public class WeightDetailActivity extends AppCompatActivity {
     private void displayExercise(Exercise exercise) {
         nameTextView.setText(exercise.getName());
         imageView.setImageResource(exercise.getImageResourceId());
-        // descriptionTextView.setText(exercise.getDescription());
         benefitsTextView.setText(exercise.getBenefits());
 
-        // Start the exercise
-        startCountdownTimer(10000); // Maximum duration of 10 seconds
+        int durationPerSet = 20; // 20 seconds per set
+        int totalDurationInSeconds = durationPerSet * totalSets;
+
+        startCountdownTimer(totalDurationInSeconds * 1000L); // Convert to milliseconds
+
+        setsAndRepsTextView.setText(totalSets + " sets of " + repsPerSet + " reps");
     }
 
     private void startCountdownTimer(long millisInFuture) {
@@ -101,11 +107,11 @@ public class WeightDetailActivity extends AppCompatActivity {
                 exerciseFinished();
             }
         }.start();
+
         isExerciseRunning = true;
         PauseResumeButton.setText("Pause");
     }
 
-    @SuppressLint("DefaultLocale")
     private void updateDurationTextView(long millisUntilFinished) {
         long minutes = millisUntilFinished / 60000;
         long seconds = (millisUntilFinished % 60000) / 1000;
@@ -113,78 +119,56 @@ public class WeightDetailActivity extends AppCompatActivity {
     }
 
     private void exerciseFinished() {
-        isExerciseRunning = false;
-        sessionStatusTextView.setText("Exercise Completed");
-        startBreakBeforeNextExercise();
+        currentSet++;
+        if (currentSet <= totalSets) {
+            // Restart the timer for the next set
+            startCountdownTimer(20 * 1000L); // 20 seconds per set
+            sessionStatusTextView.setText("Set " + currentSet + " of " + totalSets);
+        } else {
+            isExerciseRunning = false;
+            sessionStatusTextView.setText("Exercise Completed");
+            startBreakBeforeNextExercise();
+        }
     }
 
-    @SuppressLint("SetTextI18n")
     private void startBreakBeforeNextExercise() {
-        // Change the ImageView to display a break image
+        // Implement the logic for the break before the next exercise
+        // Change UI elements to indicate break
         imageView.setImageResource(R.drawable.ic_drik_water);
+        sessionStatusTextView.setText("Taking a break before next exercise");
+        PauseResumeButton.setVisibility(View.INVISIBLE); // Hide pause/resume button during break
+        skipBreakButton.setVisibility(View.VISIBLE); // skip break button during break
 
-        // Display a message indicating the break
-        nameTextView.setText("Break Time");
-        sessionStatusTextView.setText("Take a 25-second break before the next exercise.");
+        // Display a message to the user
+        Toast.makeText(this, "Taking a break before next exercise", Toast.LENGTH_SHORT).show();
 
-        // Set benefits of the break time
-        String breakBenefits = "Taking breaks during exercise helps prevent fatigue, reduce the risk of injury, and allows muscles to recover.";
-        benefitsTextView.setText(breakBenefits);
-
-        // Start a countdown timer for the break duration (25 seconds)
-        startCountdownTimerForBreak(25000); // 25 seconds break
-    }
-
-    private void startCountdownTimerForBreak(long breakDuration) {
-        countDownTimer = new CountDownTimer(breakDuration, 1000) {
+        // Example: Show a countdown timer for the break duration
+        new CountDownTimer(40000, 1000) { // 1 minute break (adjust duration as needed)
             public void onTick(long millisUntilFinished) {
-                // Update the remaining break time
-                updateDurationTextView(millisUntilFinished);
-                remainingTimeMillis = millisUntilFinished;
+                // Update UI to show remaining break time
+                durationTextView.setText("Break: " + millisUntilFinished / 1000 + " seconds remaining");
             }
 
             public void onFinish() {
-                // Finish the break and start the next exercise
-                startNextExercise();
+                // Break is over, start next exercise
+                durationTextView.setText(""); // Clear break duration text
+                sessionStatusTextView.setText("Get ready for the next exercise");
+                PauseResumeButton.setVisibility(View.VISIBLE); // Show pause/resume button
+                skipBreakButton.setVisibility(View.VISIBLE); // Show skip break button
+                startNextExercise(); // Start next exercise
             }
         }.start();
     }
 
     private void skipBreak() {
-        // Cancel the current break countdown timer
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        // Proceed to the next exercise immediately
         startNextExercise();
     }
 
     private void togglePauseResume() {
-        if (isExerciseRunning) {
-            // Pause the exercise
-            pauseExercise();
-        } else {
-            // Resume the exercise
-            resumeExercise();
-        }
-    }
-
-    private void pauseExercise() {
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-        isExerciseRunning = false;
-        PauseResumeButton.setText("Resume");
-    }
-
-    private void resumeExercise() {
-        if (remainingTimeMillis > 0) {
-            startCountdownTimer(remainingTimeMillis);
-        } else {
-            // If remainingTimeMillis is 0 or negative, start from the beginning
-            startNextExercise();
-        }
-        PauseResumeButton.setText("Pause");
+        // Implement pause/resume functionality if needed
     }
 
     @Override

@@ -61,6 +61,7 @@
         android:ems="10"
         android:hint="Enter food to search"
         android:inputType="text"
+
         android:padding="16dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
@@ -70,7 +71,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <TextView
+<TextView
         android:id="@+id/foodInfoTextView"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Exercise implements Serializable {
     private final String name;
-    private final String duration;
+    private String duration; // Remove the final keyword here
     private final int imageResourceId;
     private final String description;
     private final String benefits;
@@ -25,6 +25,10 @@ public class Exercise implements Serializable {
 
     public String getDuration() {
         return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public int getImageResourceId() {
