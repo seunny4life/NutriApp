@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-
 public class SummaryFragment extends Fragment {
     private TextView totalCaloriesTextView;
     private TextView totalProteinTextView;
@@ -28,6 +26,13 @@ public class SummaryFragment extends Fragment {
     private Button setGoalButton;
     private Button clearButton;
     private double totalCalories = 0;
+    private double totalProtein = 0;
+    private double totalFat = 0;
+    private double totalCarbs = 0;
+    private double totalFiber = 0;
+    private double totalSugar = 0;
+    private double totalSodium = 0;
+    private double totalCholesterol = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,11 +45,9 @@ public class SummaryFragment extends Fragment {
         // Set listeners for buttons
         setListeners();
 
-        // Retrieve and display the saved calorie goal if available
+        // Retrieve and display the saved calorie goal and totals
         retrieveAndDisplaySavedGoal();
-
-        // Get and display the summary of added foods
-        displaySummaryFromArguments();
+        retrieveAndDisplaySavedTotals();
 
         return view;
     }
@@ -75,81 +78,89 @@ public class SummaryFragment extends Fragment {
         String calorieGoal = sharedPref.getString("calorieGoal", defaultValue);
         if (!calorieGoal.equals(defaultValue)) {
             calorieGoalEditText.setText(calorieGoal);
-            setGoal(); // Update the goal TextView based on the saved goal
+            updateGoalDisplay(); // Update the goal TextView based on the saved goal
         }
     }
 
-    private void displaySummaryFromArguments() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ArrayList<FoodItem> addedFoods = (ArrayList<FoodItem>) bundle.getSerializable("addedFoods");
-            if (addedFoods != null) {
-                displaySummary(addedFoods);
-            }
-        }
+    private void retrieveAndDisplaySavedTotals() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        totalCalories = sharedPref.getFloat("totalCalories", 0f);
+        totalProtein = sharedPref.getFloat("totalProtein", 0f);
+        totalFat = sharedPref.getFloat("totalFat", 0f);
+        totalCarbs = sharedPref.getFloat("totalCarbs", 0f);
+        totalFiber = sharedPref.getFloat("totalFiber", 0f);
+        totalSugar = sharedPref.getFloat("totalSugar", 0f);
+        totalSodium = sharedPref.getFloat("totalSodium", 0f);
+        totalCholesterol = sharedPref.getFloat("totalCholesterol", 0f);
+
+        updateUITotals();
+        updateGoalDisplay(); // Add this line to update goal display
     }
 
-    private void displaySummary(ArrayList<FoodItem> addedFoods) {
-        totalCalories = 0;
-        double totalProtein = 0;
-        double totalFat = 0;
-        double totalCarbs = 0;
-        double totalFiber = 0;
-        double totalSugar = 0;
-        double totalSodium = 0;
-        double totalCholesterol = 0;
-
-        for (FoodItem food : addedFoods) {
-            totalCalories += food.getCalories();
-            totalProtein += food.getProteinG();
-            totalFat += food.getFatTotalG();
-            totalCarbs += food.getCarbohydratesTotalG();
-            totalFiber += food.getFiberG(); // Assuming a getFiberG method exists
-            totalSugar += food.getSugarG(); // Assuming a getSugarG method exists
-            totalSodium += food.getSodiumMg(); // Assuming a getSodiumMg method exists
-            totalCholesterol += food.getCholesterolMg(); // Assuming a getCholesterolMg method exists
-        }
-
-        totalCaloriesTextView.setText("Total Calories: " + totalCalories + " kcal");
-        totalProteinTextView.setText("Total Protein: " + totalProtein + " g");
-        totalFatTextView.setText("Total Fat: " + totalFat + " g");
-        totalCarbsTextView.setText("Total Carbohydrates: " + totalCarbs + " g");
-        totalFiberTextView.setText("Total Fiber: " + totalFiber + " g");
-        totalSugarTextView.setText("Total Sugar: " + totalSugar + " g");
-        totalSodiumTextView.setText("Total Sodium: " + totalSodium + " mg");
-        totalCholesterolTextView.setText("Total Cholesterol: " + totalCholesterol + " mg");
-
-        // Set the goal whenever the total values are updated
-        setGoal();
+    private void updateUITotals() {
+        totalCaloriesTextView.setText(String.format("Total Calories: %.2f kcal", totalCalories));
+        totalProteinTextView.setText(String.format("Total Protein: %.2f g", totalProtein));
+        totalFatTextView.setText(String.format("Total Fat: %.2f g", totalFat));
+        totalCarbsTextView.setText(String.format("Total Carbohydrates: %.2f g", totalCarbs));
+        totalFiberTextView.setText(String.format("Total Fiber: %.2f g", totalFiber));
+        totalSugarTextView.setText(String.format("Total Sugar: %.2f g", totalSugar));
+        totalSodiumTextView.setText(String.format("Total Sodium: %.2f mg", totalSodium));
+        totalCholesterolTextView.setText(String.format("Total Cholesterol: %.2f mg", totalCholesterol));
     }
 
     private void setGoal() {
         String calorieGoalString = calorieGoalEditText.getText().toString().trim();
         if (!calorieGoalString.isEmpty()) {
-            // Calculate the remaining calories based on the goal
-            double remainingCalories = Double.parseDouble(calorieGoalString) - totalCalories;
-
-            // Get the MainActivity instance and call the updateCaloriesCard method
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null) {
-                mainActivity.updateCaloriesCard("Today target: " + remainingCalories + " kcal");
-            }
-
-            // Update the goal TextView to display the remaining calories
-            goalTextView.setText("Goal: " + totalCalories + "/" + calorieGoalString);
-
             // Save the goal into SharedPreferences
             SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("calorieGoal", calorieGoalString);
             editor.apply();
+
+            updateGoalDisplay(); // Update the goal display with the new goal
         }
     }
 
     private void clearTotals() {
-        totalCaloriesTextView.setText("Total Calories: 0 kcal");
-        totalProteinTextView.setText("Total Protein: 0 g");
-        totalFatTextView.setText("Total Fat: 0 g");
-        totalCarbsTextView.setText("Total Carbohydrates: 0 g");
+        totalCalories = 0;
+        totalProtein = 0;
+        totalFat = 0;
+        totalCarbs = 0;
+        totalFiber = 0;
+        totalSugar = 0;
+        totalSodium = 0;
+        totalCholesterol = 0;
+
+        updateUITotals();
+        updateGoalDisplay(); // Update the goal display after clearing totals
+
+        // Clear totals from SharedPreferences
+        clearTotalsFromSharedPreferences();
+    }
+
+    private void clearTotalsFromSharedPreferences() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("totalCalories");
+        editor.remove("totalProtein");
+        editor.remove("totalFat");
+        editor.remove("totalCarbs");
+        editor.remove("totalFiber");
+        editor.remove("totalSugar");
+        editor.remove("totalSodium");
+        editor.remove("totalCholesterol");
+        editor.apply();
+    }
+
+    private void updateGoalDisplay() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "0";
+        String calorieGoalString = sharedPref.getString("calorieGoal", defaultValue);
+        if (!calorieGoalString.isEmpty()) {
+            double calorieGoal = Double.parseDouble(calorieGoalString);
+            goalTextView.setText(String.format("Goal: %.2f/%.2f kcal", totalCalories, calorieGoal));
+        } else {
+            goalTextView.setText("Set your calorie goal");
+        }
     }
 }

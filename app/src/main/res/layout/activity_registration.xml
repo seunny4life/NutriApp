@@ -131,7 +131,7 @@
             android:id="@+id/buttonRegister"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg_white"
+            android:background="@drawable/btn_bg"
             android:text="@string/register"
             android:textSize="20sp"
             android:textStyle="bold"

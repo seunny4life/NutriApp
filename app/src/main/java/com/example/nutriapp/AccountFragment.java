@@ -47,6 +47,8 @@ public class AccountFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int UPDATE_LOCATION_REQUEST = 101;
 
+    private static final int EDIT_ACTIVITY_REQUEST_CODE = 1;
+
     private ImageView imageViewProfile;
     private Uri filePath;
     private FirebaseStorage storage;
@@ -185,7 +187,7 @@ public class AccountFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == UPDATE_LOCATION_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+        } else if (requestCode == EDIT_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             String updatedLocation = data.getStringExtra("updatedLocation");
             if (updatedLocation != null && !updatedLocation.isEmpty()) {
                 displayLocation.setText(updatedLocation);
@@ -277,7 +279,7 @@ public class AccountFragment extends Fragment {
     }
 
     public void editPersonalInfo(View view) {
-        startActivity(new Intent(getContext(), EditActivity.class));
+        startEditActivityForResult(); // Start EditActivity for result
     }
 
     public void changePassword(View view) {
@@ -290,5 +292,11 @@ public class AccountFragment extends Fragment {
 
     public void workoutHistory(View view) {
         startActivity(new Intent(getContext(), WorkoutHistoryActivity.class));
+    }
+
+    // Method to start EditActivity for result
+    private void startEditActivityForResult() {
+        Intent intent = new Intent(getContext(), EditActivity.class);
+        startActivityForResult(intent, EDIT_ACTIVITY_REQUEST_CODE);
     }
 }

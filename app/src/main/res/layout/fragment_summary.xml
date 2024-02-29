@@ -14,12 +14,14 @@
             android:id="@+id/totalCaloriesTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Total Calories: 0"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/totalProteinTextView"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Total Protein: 0"
             android:textSize="18sp" />
@@ -27,6 +29,7 @@
         <TextView
             android:id="@+id/totalFatTextView"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Total Fat: 0"
             android:textSize="18sp" />
@@ -34,6 +37,7 @@
         <TextView
             android:id="@+id/totalCarbsTextView"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Total Carbohydrates: 0"
             android:textSize="18sp" />
@@ -41,6 +45,7 @@
         <TextView
             android:id="@+id/totalFiberTextView"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Total Fiber: 0"
             android:textSize="18sp" />
@@ -50,11 +55,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total Sugars: 0"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/totalSodiumTextView"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Total Sodium: 0"
             android:textSize="18sp" />
@@ -63,38 +70,50 @@
             android:id="@+id/totalCholesterolTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Total Cholesterol: 0"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/calorieGoalEditText"
             android:layout_width="match_parent"
+            android:background="@drawable/input_bg"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:paddingTop="12dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="12dp"
             android:hint="Set your calorie goal"
             android:inputType="number"
-            android:textSize="18sp" />
+           />
 
         <TextView
             android:id="@+id/goalTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Goal: 0/0"
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/setGoalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="@drawable/a4_grad"
             android:text="Set Goal"
+
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/clearButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FF3C3C"
             android:layout_marginTop="16dp"
             android:text="Clear Total"
             android:textSize="18sp" />

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +35,7 @@ public class EditActivity extends AppCompatActivity {
         // Initialize UI components
         inputFirstName = findViewById(R.id.firstName);
         inputLastName = findViewById(R.id.lastName);
-        inputPlace = findViewById(R.id.location);
+        inputPlace = findViewById(R.id.location); // Updated variable name
         save = findViewById(R.id.buttonSave);
         cancel = findViewById(R.id.buttonCancel);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -61,9 +62,11 @@ public class EditActivity extends AppCompatActivity {
         if (currentUser != null) {
             String firstName = sharedPreferences.getString("firstName", "");
             String lastName = sharedPreferences.getString("lastName", "");
+            String location = sharedPreferences.getString("location", ""); // Retrieve location from SharedPreferences
 
             inputFirstName.setText(firstName);
             inputLastName.setText(lastName);
+            inputPlace.setText(location); // Set location in EditText
         }
     }
 

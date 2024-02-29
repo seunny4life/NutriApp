@@ -1,6 +1,8 @@
 package com.example.nutriapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,7 @@ import okhttp3.Response;
 public class NutritionFragment extends Fragment {
     private TextView foodInfoTextView;
     private FoodItem lastSearchedFoodItem = null;
-    private final ArrayList<FoodItem> addedFoodList = new ArrayList<>();
+    private ArrayList<FoodItem> addedFoodList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +53,7 @@ public class NutritionFragment extends Fragment {
         addButton.setOnClickListener(v -> {
             if (lastSearchedFoodItem != null) {
                 addedFoodList.add(lastSearchedFoodItem);
+                updateTotalsInSharedPreferences(lastSearchedFoodItem);
                 Toast.makeText(getContext(), lastSearchedFoodItem.getName() + " added", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "No food item to add", Toast.LENGTH_SHORT).show();
@@ -138,5 +141,31 @@ public class NutritionFragment extends Fragment {
     private void showToast(String message) {
         if (getActivity() == null) return;
         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show());
+    }
+
+    private void updateTotalsInSharedPreferences(FoodItem foodItem) {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        // Retrieve current totals and add new item's values
+        float totalCalories = sharedPref.getFloat("totalCalories", 0f) + (float) foodItem.getCalories();
+        float totalProtein = sharedPref.getFloat("totalProtein", 0f) + (float) foodItem.getProteinG();
+        float totalFat = sharedPref.getFloat("totalFat", 0f) + (float) foodItem.getFatTotalG();
+        float totalCarbs = sharedPref.getFloat("totalCarbs", 0f) + (float) foodItem.getCarbohydratesTotalG();
+        float totalFiber = sharedPref.getFloat("totalFiber", 0f) + (float) foodItem.getFiberG();
+        float totalSugar = sharedPref.getFloat("totalSugar", 0f) + (float) foodItem.getSugarG();
+        float totalSodium = sharedPref.getFloat("totalSodium", 0f) + (float) foodItem.getSodiumMg();
+        float totalCholesterol = sharedPref.getFloat("totalCholesterol", 0f) + (float) foodItem.getCholesterolMg();
+
+        // Save updated totals
+        editor.putFloat("totalCalories", totalCalories);
+        editor.putFloat("totalProtein", totalProtein);
+        editor.putFloat("totalFat", totalFat);
+        editor.putFloat("totalCarbs", totalCarbs);
+        editor.putFloat("totalFiber", totalFiber);
+        editor.putFloat("totalSugar", totalSugar);
+        editor.putFloat("totalSodium", totalSodium);
+        editor.putFloat("totalCholesterol", totalCholesterol);
+        editor.apply();
     }
 }

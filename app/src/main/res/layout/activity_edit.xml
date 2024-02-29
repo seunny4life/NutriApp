@@ -62,7 +62,7 @@
         android:id="@+id/buttonSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_white"
+        android:background="@drawable/btn_bg"
         android:text="@string/saved"
 
         android:textColor="@color/black"
@@ -99,7 +99,7 @@
         android:id="@+id/buttonCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_white"
+        android:background="@drawable/btn_bg"
         android:text="@string/cancel"
         android:textColor="@color/black"
         android:textSize="18sp"

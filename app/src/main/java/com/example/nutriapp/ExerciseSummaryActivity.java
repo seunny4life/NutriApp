@@ -1,17 +1,14 @@
 package com.example.nutriapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -23,10 +20,14 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
     private double distance;
     private int averageHeartRate;
 
+    private WorkoutHistoryDbHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_summary);
+
+        dbHelper = new WorkoutHistoryDbHelper(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -40,9 +41,12 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
         }
 
         Button okButton = findViewById(R.id.okButton);
-        okButton.setOnClickListener(v -> {
-            saveWorkoutHistory();
-            navigateToWorkoutHistory();
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveWorkoutHistory();
+                navigateToWorkoutHistory();
+            }
         });
     }
 
@@ -83,26 +87,21 @@ public class ExerciseSummaryActivity extends AppCompatActivity {
     private void navigateToWorkoutHistory() {
         Intent intent = new Intent(ExerciseSummaryActivity.this, WorkoutHistoryActivity.class);
         startActivity(intent);
-        finish();
+        finish(); // Finish the ExerciseSummaryActivity after navigating
     }
 
     private void saveWorkoutHistory() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String json = sharedPreferences.getString("workoutHistory", null);
-        Type type = new TypeToken<ArrayList<WorkoutHistoryItem>>() {}.getType();
-        ArrayList<WorkoutHistoryItem> workoutHistoryItems = gson.fromJson(json, type);
+        ContentValues values = new ContentValues();
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_EXERCISE_TYPE, exerciseType);
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DURATION, duration);
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_CALORIES_BURNED, caloriesBurned);
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DISTANCE, distance);
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_AVERAGE_HEART_RATE, averageHeartRate);
+        values.put(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_TIMESTAMP, getCurrentTimestamp());
 
-        if (workoutHistoryItems == null) workoutHistoryItems = new ArrayList<>();
-
-        WorkoutHistoryItem newItem = new WorkoutHistoryItem(exerciseType, duration, caloriesBurned, distance, averageHeartRate, getCurrentTimestamp());
-        workoutHistoryItems.add(newItem);
-
-        String updatedJson = gson.toJson(workoutHistoryItems);
-        editor.putString("workoutHistory", updatedJson);
-        editor.apply();
+        db.insert(WorkoutHistoryContract.WorkoutEntry.TABLE_NAME, null, values);
     }
 
     private String getCurrentTimestamp() {

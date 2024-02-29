@@ -50,7 +50,10 @@ public class PasswordChangedActivity extends AppCompatActivity {
         // Validate input and show errors if needed
         if (newPassword.isEmpty() || newPassword.length() < 8) {
             // Show an error message for the new password field
-            showError(changePassword, "Password must be at least 8 characters!");
+            showError(changePassword, "Password must be at least 8 characters long!");
+        } else if (!isStrongPassword(newPassword)) {
+            // Show an error message if the password is not strong enough
+            showError(changePassword, "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character!");
         } else if (newPasswordConfirm.isEmpty() || (!newPasswordConfirm.equals(newPassword))) {
             // Show an error message for the confirmed password field
             showError(confirmedPassword, "Passwords do not match!");
@@ -77,6 +80,12 @@ public class PasswordChangedActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private boolean isStrongPassword(String password) {
+        // Regular expression to enforce strong password criteria
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        return password.matches(passwordPattern);
     }
 
     private void saved(){
