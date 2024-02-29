@@ -3,15 +3,14 @@ package com.example.nutriapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.io.Serializable;
 import java.util.List;
 
 public class WeightDetailActivity extends AppCompatActivity {
@@ -20,7 +19,6 @@ public class WeightDetailActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private boolean isExerciseRunning = false;
     private Button PauseResumeButton, skipBreakButton;
-
     private CountDownTimer countDownTimer;
     private boolean isFirstStart = true;
     private List<Exercise> exercises;
@@ -29,6 +27,7 @@ public class WeightDetailActivity extends AppCompatActivity {
     private int currentSet = 1;
     private int repsPerSet = 10;
     private long remainingTimeMillis = 0;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +37,11 @@ public class WeightDetailActivity extends AppCompatActivity {
         retrieveAndSetExerciseDetails();
         startNextExercise();
 
-        // Set click listener for PauseResumeButton
         PauseResumeButton.setOnClickListener(v -> togglePauseResume());
-
-        // Set click listener for skipBreakButton
         skipBreakButton.setOnClickListener(v -> skipBreak());
+
+        // Initialize Vibrator
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
     }
 
     private void initializeViews() {
@@ -55,6 +54,7 @@ public class WeightDetailActivity extends AppCompatActivity {
         PauseResumeButton = findViewById(R.id.PauseResumeButton);
         skipBreakButton = findViewById(R.id.skipBreakButton);
         setsAndRepsTextView = findViewById(R.id.setsAndRepsTextView);
+        vibrateExerciseComplete();
     }
 
     private void retrieveAndSetExerciseDetails() {
@@ -65,13 +65,16 @@ public class WeightDetailActivity extends AppCompatActivity {
     private void startNextExercise() {
         if (currentExerciseIndex < exercises.size()) {
             Exercise exercise = exercises.get(currentExerciseIndex);
-            totalSets = ((WeightsExercise) exercise).getSets(); // Get adjusted sets
-            repsPerSet = ((WeightsExercise) exercise).getReps(); // Get adjusted reps
+            totalSets = ((WeightsExercise) exercise).getSets();
+            repsPerSet = ((WeightsExercise) exercise).getReps();
             displayExercise(exercise);
             currentExerciseIndex++;
         } else {
-            // All exercises have been completed
-            finish();
+            // All exercises finished, start WeightSummaryActivity
+            Intent intent = new Intent(this, WeightSummaryActivity.class);
+            intent.putExtra("EXERCISES", (Serializable) exercises);
+            startActivity(intent);
+            finish(); // Finish WeightDetailActivity
         }
     }
 
@@ -80,11 +83,10 @@ public class WeightDetailActivity extends AppCompatActivity {
         imageView.setImageResource(exercise.getImageResourceId());
         benefitsTextView.setText(exercise.getBenefits());
 
-        int durationPerSet = 20; // 20 seconds per set
+        int durationPerSet = 20;
         int totalDurationInSeconds = durationPerSet * totalSets;
 
-        startCountdownTimer(totalDurationInSeconds * 1000L); // Convert to milliseconds
-
+        startCountdownTimer(totalDurationInSeconds * 1000L);
         setsAndRepsTextView.setText(totalSets + " sets of " + repsPerSet + " reps");
     }
 
@@ -121,8 +123,7 @@ public class WeightDetailActivity extends AppCompatActivity {
     private void exerciseFinished() {
         currentSet++;
         if (currentSet <= totalSets) {
-            // Restart the timer for the next set
-            startCountdownTimer(20 * 1000L); // 20 seconds per set
+            startCountdownTimer(20 * 1000L);
             sessionStatusTextView.setText("Set " + currentSet + " of " + totalSets);
         } else {
             isExerciseRunning = false;
@@ -132,30 +133,29 @@ public class WeightDetailActivity extends AppCompatActivity {
     }
 
     private void startBreakBeforeNextExercise() {
-        // Implement the logic for the break before the next exercise
-        // Change UI elements to indicate break
         imageView.setImageResource(R.drawable.ic_drik_water);
-        sessionStatusTextView.setText("Taking a break before next exercise");
-        PauseResumeButton.setVisibility(View.INVISIBLE); // Hide pause/resume button during break
-        skipBreakButton.setVisibility(View.VISIBLE); // skip break button during break
 
-        // Display a message to the user
-        Toast.makeText(this, "Taking a break before next exercise", Toast.LENGTH_SHORT).show();
+        // Display a message indicating the break
+        nameTextView.setText("Break Time");
+        sessionStatusTextView.setText("Take a 40-second break before the next exercise.");
 
-        // Example: Show a countdown timer for the break duration
-        new CountDownTimer(40000, 1000) { // 1 minute break (adjust duration as needed)
+        setsAndRepsTextView.setVisibility(View.INVISIBLE);
+
+        // Set benefits of the break time
+        String breakBenefits = "Taking breaks during exercise helps prevent fatigue, injury, and allows muscles to recover.";
+        benefitsTextView.setText(breakBenefits);
+
+        new CountDownTimer(40000, 1000) {
             public void onTick(long millisUntilFinished) {
-                // Update UI to show remaining break time
-                durationTextView.setText("Break: " + millisUntilFinished / 1000 + " seconds remaining");
+                durationTextView.setText("Break: " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                // Break is over, start next exercise
-                durationTextView.setText(""); // Clear break duration text
+                durationTextView.setText("");
                 sessionStatusTextView.setText("Get ready for the next exercise");
-                PauseResumeButton.setVisibility(View.VISIBLE); // Show pause/resume button
-                skipBreakButton.setVisibility(View.VISIBLE); // Show skip break button
-                startNextExercise(); // Start next exercise
+                PauseResumeButton.setVisibility(View.VISIBLE);
+                skipBreakButton.setVisibility(View.VISIBLE);
+                startNextExercise();
             }
         }.start();
     }
@@ -168,7 +168,22 @@ public class WeightDetailActivity extends AppCompatActivity {
     }
 
     private void togglePauseResume() {
-        // Implement pause/resume functionality if needed
+        if (isExerciseRunning) {
+            countDownTimer.cancel();
+            isExerciseRunning = false;
+            PauseResumeButton.setText("Resume");
+        } else {
+            startCountdownTimer(remainingTimeMillis);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        finish();
     }
 
     @Override
@@ -176,6 +191,12 @@ public class WeightDetailActivity extends AppCompatActivity {
         super.onDestroy();
         if (countDownTimer != null) {
             countDownTimer.cancel();
+        }
+    }
+
+    private void vibrateExerciseComplete() {
+        if (vibrator != null) {
+            vibrator.vibrate(500);
         }
     }
 }

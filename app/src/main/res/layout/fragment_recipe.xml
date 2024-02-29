@@ -10,6 +10,9 @@
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:padding="16dp"
         android:hint="Enter a recipe name"
         android:imeOptions="actionSearch"
         android:inputType="text" />

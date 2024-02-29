@@ -20,6 +20,9 @@
         android:theme="@style/Base.Theme.NutriApp"
         tools:targetApi="s">
         <activity
+            android:name=".WeightSummaryActivity"
+            android:exported="false" />
+        <activity
             android:name=".CardioDetailActivity"
             android:exported="false" />
         <activity
@@ -58,7 +61,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>\
         </activity>
     </application>
 

@@ -109,7 +109,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_bg_white"
+        android:background="@drawable/a4_grad"
         android:text="Search"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/noteTextView"

@@ -136,12 +136,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                 NumberPicker repsPicker = dialogView.findViewById(R.id.repsPicker);
 
                 // Set the range and initial value for setsPicker
-                setsPicker.setMaxValue(20); // Maximum value for sets
+                setsPicker.setMaxValue(10); // Maximum value for sets
                 setsPicker.setMinValue(1); // Minimum value for sets
                 setsPicker.setValue(((WeightsExercise) exercise).getSets()); // Initial value for sets
 
                 // Set the range and initial value for repsPicker
-                repsPicker.setMaxValue(50); // Maximum value for reps
+                repsPicker.setMaxValue(10); // Maximum value for reps
                 repsPicker.setMinValue(1); // Minimum value for reps
                 repsPicker.setValue(((WeightsExercise) exercise).getReps()); // Initial value for reps
 

@@ -76,7 +76,7 @@ public class BMIFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentprogress = progress;
                 mintprogress = String.valueOf(currentprogress);
-                mcurrentheight.setText(mintprogress + " cm");
+                mcurrentheight.setText(mintprogress);
             }
 
             @Override
@@ -146,10 +146,12 @@ public class BMIFragment extends Fragment {
         double height = Double.parseDouble(mintprogress);
         double weight = Double.parseDouble(weight2);
         BmiResultFragment bmiResultFragment = BmiResultFragment.newInstance((float) height, (float) weight, typerofuser);
-        FragmentManager fragmentManager = getChildFragmentManager();
+        // Use getActivity().getSupportFragmentManager() for fragment transactions from within another fragment
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, bmiResultFragment)
+                .replace(R.id.fragment_container, bmiResultFragment) // Ensure this ID matches your container's ID in MainActivity
                 .addToBackStack(null)
                 .commit();
     }
+
 }

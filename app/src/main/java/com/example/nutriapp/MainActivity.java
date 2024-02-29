@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout fragmentContainer;
     private Button bmiButton;
     private TextView greetingTextView;
-
+    private TextView calories_card;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentContainer = findViewById(R.id.fragment_container);
         bmiButton = findViewById(R.id.bmi);
         greetingTextView = findViewById(R.id.greeting); // Initialize greeting TextView
+        calories_card = findViewById(R.id.calories_card);
 
         bmiButton.setOnClickListener(v -> {
-            // Replace the current fragment with the BMIFragment
+            scrollView.setVisibility(View.GONE); // Hide the scrollView to ensure fragmentContainer is visible
+            fragmentContainer.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new BMIFragment())
                     .addToBackStack(null)  // Allows users to go back to the previous fragment/state
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigation();
+    }
+    public void updateCaloriesCard(String text) {
+        calories_card.setText(text);
     }
 
     private void bottomNavigation() {

@@ -126,7 +126,18 @@ public class SummaryFragment extends Fragment {
     private void setGoal() {
         String calorieGoalString = calorieGoalEditText.getText().toString().trim();
         if (!calorieGoalString.isEmpty()) {
+            // Calculate the remaining calories based on the goal
+            double remainingCalories = Double.parseDouble(calorieGoalString) - totalCalories;
+
+            // Get the MainActivity instance and call the updateCaloriesCard method
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null) {
+                mainActivity.updateCaloriesCard("Today target: " + remainingCalories + " kcal");
+            }
+
+            // Update the goal TextView to display the remaining calories
             goalTextView.setText("Goal: " + totalCalories + "/" + calorieGoalString);
+
             // Save the goal into SharedPreferences
             SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
