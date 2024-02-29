@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadWorkoutHistory();
+
+        // Enable swipe-to-delete functionality
+        enableSwipeToDelete();
     }
 
     private void loadWorkoutHistory() {
@@ -62,11 +66,37 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
             int averageHeartRate = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_AVERAGE_HEART_RATE));
             String timestamp = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_TIMESTAMP));
 
-            workoutHistoryItems.add(new WorkoutHistoryItem(exerciseType, duration, caloriesBurned, distance, averageHeartRate, timestamp));
+            workoutHistoryItems.add(new WorkoutHistoryItem(itemId, exerciseType, duration, caloriesBurned, distance, averageHeartRate, timestamp));
         }
         cursor.close();
 
         adapter = new WorkoutHistoryAdapter(workoutHistoryItems);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void enableSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                deleteWorkout(position);
+            }
+        };
+
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+    }
+
+    private void deleteWorkout(int position) {
+        WorkoutHistoryItem deletedItem = workoutHistoryItems.get(position);
+        workoutHistoryItems.remove(position);
+        adapter.notifyItemRemoved(position);
+
+        // Delete workout from the database
+        dbHelper.deleteWorkout(deletedItem.getId());
     }
 }

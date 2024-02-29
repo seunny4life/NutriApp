@@ -6,21 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class WorkoutHistoryDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "WorkoutHistory.db";
-
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + WorkoutHistoryContract.WorkoutEntry.TABLE_NAME + " (" +
-                    WorkoutHistoryContract.WorkoutEntry._ID + " INTEGER PRIMARY KEY," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_EXERCISE_TYPE + " TEXT," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DURATION + " INTEGER," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_CALORIES_BURNED + " INTEGER," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DISTANCE + " REAL," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_AVERAGE_HEART_RATE + " INTEGER," +
-                    WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_TIMESTAMP + " TEXT)";
-
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + WorkoutHistoryContract.WorkoutEntry.TABLE_NAME;
+    private static final String DATABASE_NAME = "workout_history.db";
+    private static final int DATABASE_VERSION = 1;
 
     public WorkoutHistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,12 +15,31 @@ public class WorkoutHistoryDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        final String SQL_CREATE_WORKOUT_HISTORY_TABLE = "CREATE TABLE " +
+                WorkoutHistoryContract.WorkoutEntry.TABLE_NAME + " (" +
+                WorkoutHistoryContract.WorkoutEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_EXERCISE_TYPE + " TEXT NOT NULL, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DURATION + " INTEGER NOT NULL, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_CALORIES_BURNED + " INTEGER NOT NULL, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_DISTANCE + " REAL NOT NULL, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_AVERAGE_HEART_RATE + " INTEGER NOT NULL, " +
+                WorkoutHistoryContract.WorkoutEntry.COLUMN_NAME_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+
+        db.execSQL(SQL_CREATE_WORKOUT_HISTORY_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL("DROP TABLE IF EXISTS " + WorkoutHistoryContract.WorkoutEntry.TABLE_NAME);
         onCreate(db);
+    }
+
+    public void deleteWorkout(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(WorkoutHistoryContract.WorkoutEntry.TABLE_NAME,
+                WorkoutHistoryContract.WorkoutEntry._ID + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
     }
 }
